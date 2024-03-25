@@ -15,6 +15,13 @@ class BaseModel(Model):
         database = db
 
     @classmethod
-    def get_by_id(cls, id):
-        query = (cls.select().where(cls.id == id).first())
-        return query
+    def get_by_id(cls, id, fields=None):
+        query = cls.select()
+        # Nếu fields được cung cấp, chỉ chọn các trường cụ thể đó
+        if fields:
+            query = query.select(*fields)
+        query = query.where(cls.id == id)
+        try:
+            return list(query.dicts())[0]  # Trả về dict chứa các trường được truy xuất
+        except cls.DoesNotExist:
+            return None
