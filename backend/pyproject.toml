@@ -10,6 +10,8 @@ python = "^3.12"
 flask = "^3.0.2"
 psycopg2-binary = "^2.9.9"
 peewee = "^3.17.1"
+blueprint = "^3.4.2"
+configparser = "^6.0.1"
 
 
 [build-system]
