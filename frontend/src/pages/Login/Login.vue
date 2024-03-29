@@ -16,13 +16,13 @@
             required
             type="Email"
             variant="outlined"
-            v-on:input="validateEmail"
           )
         v-col(cols="12" md="4")
           v-text-field(
             hide-details
             density="comfortable"
             label="Password"
+            :rules="passwordRules"
             required
             type="password"
             variant="outlined"
@@ -40,6 +40,7 @@
 </template>
 <script lang="js">
 import {defineComponent, reactive, ref} from "vue";
+import {showNotification} from "@/common";
 
 const LoginPage = defineComponent({
   setup(){
@@ -51,31 +52,54 @@ const LoginPage = defineComponent({
     const emailRules = ref([
       value => {
         if (value) return true
-
-        return 'E-mail is requred.'
+        return 'Vui lòng nhập đầy đủ email!'
       },
       value => {
         if (/.+@.+\..+/.test(value)) return true
-
-        return 'E-mail must be valid.'
+        return 'Email chưa đúng định dạng!'
       },
     ])
+    const passwordRules = ref([
+      value => {
+        if (value) return true
+        return 'Vui lòng nhập đầy đủ mật khẩu!'
+      }
+    ])
     const emailErrors = ref([])
+    const passwordErrors = ref([])
     const validateEmail = () => {
-      console.log('Validate email')
       emailErrors.value = []; // Clear previous errors
       emailRules.value.forEach((rule) => {
         const error = rule(loginData.value.email);
         if (error) {
           emailErrors.value.push(error);
         }
-      });
+      })
+      passwordErrors.value = []
+      passwordRules.value.forEach((rule) => {
+        const error = rule(loginData.value.password);
+        if (error) {
+          passwordErrors.value.push(error);
+        }
+      })
+      emailErrors.value.map((item, index) => {
+        if(item !== true){
+          showNotification.warning(item)
+        }
+      })
+      passwordErrors.value.map((item, index) => {
+        if(item !== true){
+          showNotification.warning(item)
+        }
+      })
     }
     return {
       emailRules,
       emailErrors,
       validateEmail,
-      loginData
+      loginData,
+      passwordRules,
+      passwordErrors
     }
   }
 })

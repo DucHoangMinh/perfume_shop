@@ -6,7 +6,7 @@
 
 // Plugins
 import { registerPlugins } from '@/plugins'
-
+import {Notifications} from "@kyvg/vue3-notification";
 // Components
 import App from './App.vue'
 
@@ -17,4 +17,5 @@ const app = createApp(App)
 
 registerPlugins(app)
 app.use(router)
+app.use(Notifications)
 app.mount('#app')
