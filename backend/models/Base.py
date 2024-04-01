@@ -1,15 +1,16 @@
-from peewee import Model, DateTimeField, BigIntegerField, BooleanField
+from peewee import Model, DateTimeField, BigIntegerField, BooleanField, AutoField
 from config.database import db
+import datetime
 
 class BaseModel(Model):
-    id = BigIntegerField(primary_key=True, unique=True, null=False),
-    created_at = DateTimeField(),
+    id = AutoField(),
+    created_at = DateTimeField(default=datetime.datetime.now),
     created_by = BigIntegerField(),
     modified_at = DateTimeField(),
     modified_by = BigIntegerField(),
     deleted_at = DateTimeField(),
     deleted_by = BigIntegerField(),
-    active = BooleanField(default=True)
+    is_active = BooleanField(default=True)
 
     class Meta:
         database = db
@@ -22,6 +23,13 @@ class BaseModel(Model):
             query = query.select(*fields)
         query = query.where(cls.id == id)
         try:
-            return list(query.dicts())[0]  # Trả về dict chứa các trường được truy xuất
+            return list(query)[0]  # Trả về dict chứa các trường được truy xuất
         except cls.DoesNotExist:
             return None
+
+    @classmethod
+    def get_by_property(cls, prop, value):
+        query = cls.select().where(getattr(cls, prop) == value)
+        if len(list(query.dicts())) > 0:
+            return list(query)[0]
+        else: return None
