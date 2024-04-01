@@ -31,7 +31,7 @@ def upgrade() -> None:
         role VARCHAR not null ,
         address TEXT not null ,
         phone BIGINT not null,
-        active BOOLEAN not null default TRUE
+        is_active BOOLEAN not null default TRUE
     );
     '''
     # ### end Alembic commands ###
