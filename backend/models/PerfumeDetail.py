@@ -2,11 +2,12 @@ from models.Base import BaseModel
 from peewee import CharField, TextField, ForeignKeyField, IntegerField
 from playhouse.postgres_ext import JSONField
 from models.PerfumeFragnant import PerfumeFragnant
+from models.PerfumeBranch import PerfumeBranch
 
 
 class PerfumeDetail(BaseModel):
     name = CharField(null=False, unique=True, max_length=30)
-    branch = CharField(null=False, max_length=30)
+    branch = ForeignKeyField(PerfumeBranch, backref='id')
     fragnant = ForeignKeyField(PerfumeFragnant, backref='id')
     volume = IntegerField(null=False)
     concentration = IntegerField(null=False)
