@@ -5,6 +5,7 @@ from flask_login import UserMixin
 from config.setting import roles
 from peewee import BigIntegerField, CharField, TextField, BooleanField, BlobField
 
+
 class User(BaseModel, UserMixin):
     username = CharField(null=False, unique=True)
     fullname = CharField(null=False, unique=True)
