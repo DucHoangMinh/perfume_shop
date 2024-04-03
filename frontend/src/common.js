@@ -1,6 +1,7 @@
 import { useNotification} from "@kyvg/vue3-notification";
 import axios from "axios";
 import Cookies from 'js-cookie'
+import store from "@/store";
 const notification = useNotification()
 
 const showNotification = {
@@ -48,8 +49,11 @@ const api = {
 const checkAuthenticated = async () => {
   try {
     const { data } = await api.get('/user/check_authenticated')
+    store.commit('setAuthenticated', true)
     return true
   }catch (err) {
+    Cookies.remove('user')
+    store.commit('setAuthenticated', false)
     return false
   }
 }
@@ -57,6 +61,7 @@ const handleLogout = async () => {
   try {
     // const { data } = await api.post('/user/logout')
     Cookies.remove('user')
+    store.commit('setAuthenticated', false)
   }catch (err) {
     showNotification.error('Có lỗi hệ thống, vui lòng đóng trình duyệt và truy cập lại!')
   }

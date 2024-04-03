@@ -1,12 +1,11 @@
-import json
-from pprint import pprint
 from flask_login import logout_user, current_user, login_user, login_required
 from playhouse.shortcuts import model_to_dict
-from pydantic import parse
 
 from flask import Blueprint, request, jsonify
 from models.User import User
-from schemas.User import SaveUser as SaveUserSchema
+from pprint import  pprint
+import jwt
+import datetime
 
 user_router = Blueprint('user_router', __name__, url_prefix="/user")
 
@@ -52,4 +51,5 @@ def logout():
 @user_router.get("/check_authenticated")
 @login_required
 def test_login_required():
+    pprint(request.cookies)
     return 'You are now login!', 200

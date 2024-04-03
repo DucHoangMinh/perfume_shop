@@ -109,7 +109,8 @@ const LoginPage = defineComponent({
         }
         try{
           const { data } = await api.post('/user/login', payload)
-          cookie.setUser(data)
+          await cookie.setUser(data)
+           // location.href = ('/')
           await router.push('/')
         }catch (e) {
           showNotification.error(e.response.data)
