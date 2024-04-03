@@ -36,7 +36,8 @@ div.header.d-flex.justify-space-around.align-end.position-relative
 
 </template>
 <script lang="js">
-import {defineComponent, ref} from "vue";
+import {defineComponent, onMounted, ref} from "vue";
+import {cookie} from "@/common";
 
 const HeaderBar = defineComponent({
   setup(){
@@ -81,6 +82,11 @@ const HeaderBar = defineComponent({
         title: '20%'
       }
     ])
+    const userInfor = ref(cookie.getUser())
+
+    onMounted(() => {
+      console.log(userInfor)
+    })
     return{
       introduceList,
       perfumeList,

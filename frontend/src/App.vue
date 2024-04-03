@@ -21,8 +21,9 @@
 
 <script lang="js">
 import HeaderBar from "@/components/Header.vue"
-import {defineComponent} from "vue";
+import {defineComponent, onMounted} from "vue";
 import {Notifications} from "@kyvg/vue3-notification";
+import {checkAuthenticated, handleLogout} from "@/common";
 const App = defineComponent({
   components: {
     Notifications,
@@ -40,6 +41,16 @@ const App = defineComponent({
         return "#2ecc71"
       }
     }
+    const handleCheckAuthenticated = async () => {
+      let result = await checkAuthenticated()
+      console.log(result)
+      if(!result){
+        await handleLogout()
+      }
+    }
+    onMounted(async () => {
+      await handleCheckAuthenticated()
+    })
     return {
       handleStyle
     }

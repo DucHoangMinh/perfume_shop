@@ -169,6 +169,20 @@ bcrypt = ">=3.1.1"
 Flask = "*"
 
 [[package]]
+name = "flask-cors"
+version = "4.0.0"
+description = "A Flask extension adding a decorator for CORS support"
+optional = false
+python-versions = "*"
+files = [
+    {file = "Flask-Cors-4.0.0.tar.gz", hash = "sha256:f268522fcb2f73e2ecdde1ef45e2fd5c71cc48fe03cffb4b441c6d1b40684eb0"},
+    {file = "Flask_Cors-4.0.0-py2.py3-none-any.whl", hash = "sha256:bc3492bfd6368d27cfe79c7821df5a8a319e1a6d5eab277a3794be19bdc51783"},
+]
+
+[package.dependencies]
+Flask = ">=0.9"
+
+[[package]]
 name = "flask-login"
 version = "0.6.3"
 description = "User authentication and session management for Flask."
@@ -706,4 +720,4 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "d498bfb68c2b616bb59ccdd00abaaa7a21f31471375a594486dd05023144e707"
+content-hash = "69777f5ee4adffa8b297c7847c7edd728b5d030742d2e62d69eb5d39b42b2643"

@@ -20,6 +20,7 @@
         v-col(cols="12" md="4")
           v-text-field(
             hide-details
+            v-model="loginData.password"
             density="comfortable"
             label="Password"
             :rules="passwordRules"
@@ -31,16 +32,17 @@
           router-link(to="#").text-black Quên mật khẩu?
         v-col(cols="12" md="4").pt-0
           v-btn.mt-2(
-            type="submit"
             block
-            @click="validateEmail"
+            @submit.prevent
+            @click="handleLogin"
             variant="outlined"
           ) Đăng nhập
 
 </template>
 <script lang="js">
 import {defineComponent, reactive, ref} from "vue";
-import {showNotification} from "@/common";
+import {api, cookie, showNotification} from "@/common";
+import router from "@/router";
 
 const LoginPage = defineComponent({
   setup(){
@@ -65,9 +67,11 @@ const LoginPage = defineComponent({
         return 'Vui lòng nhập đầy đủ mật khẩu!'
       }
     ])
+    const loginDataValidate = ref(false)
     const emailErrors = ref([])
     const passwordErrors = ref([])
     const validateEmail = () => {
+      let countError = 0
       emailErrors.value = []; // Clear previous errors
       emailRules.value.forEach((rule) => {
         const error = rule(loginData.value.email);
@@ -85,13 +89,32 @@ const LoginPage = defineComponent({
       emailErrors.value.map((item, index) => {
         if(item !== true){
           showNotification.warning(item)
+          countError += 1
         }
       })
       passwordErrors.value.map((item, index) => {
         if(item !== true){
           showNotification.warning(item)
+          countError += 1
         }
       })
+      loginDataValidate.value = countError === 0
+    }
+    const handleLogin = async () => {
+      validateEmail()
+      if(loginDataValidate.value){
+        const payload = {
+          email: loginData.value.email,
+          password: loginData.value.password
+        }
+        try{
+          const { data } = await api.post('/user/login', payload)
+          cookie.setUser(data)
+          await router.push('/')
+        }catch (e) {
+          showNotification.error(e.response.data)
+        }
+      }
     }
     return {
       emailRules,
@@ -99,7 +122,8 @@ const LoginPage = defineComponent({
       validateEmail,
       loginData,
       passwordRules,
-      passwordErrors
+      passwordErrors,
+      handleLogin
     }
   }
 })

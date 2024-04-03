@@ -3,8 +3,10 @@ from core.api import api
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from models.User import User
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
