@@ -43,6 +43,8 @@
 import {defineComponent, reactive, ref} from "vue";
 import {api, cookie, showNotification} from "@/common";
 import router from "@/router";
+import store from "@/store";
+import {toKey} from "core-js/internals/reflect-metadata";
 
 const LoginPage = defineComponent({
   setup(){
@@ -109,9 +111,9 @@ const LoginPage = defineComponent({
         }
         try{
           const { data } = await api.post('/user/login', payload)
-          await cookie.setUser(data)
-           // location.href = ('/')
-          await router.push('/')
+          await cookie.setUser(data.user)
+          await cookie.setToken(data.token)
+          location.href = '/'
         }catch (e) {
           showNotification.error(e.response.data)
         }

@@ -24,9 +24,11 @@ div.header.d-flex.justify-space-around.align-end.position-relative
     v-card.mx-auto(max-width="330")
       v-list(:items="saleList").cursor-pointer
   .sub-function
-    .account
-      router-link(to="/account")
+    .account.d-flex
+      router-link(to="/account" v-if="!userInfor")
         v-icon(icon="mdi-account").text-white.mr-2 mdi-account
+      router-link(to="#" v-if="userInfor").text-decoration-none.font-weight-bold.mr-2
+        p.text-white {{userInfor.fullname}}
       router-link(to="#")
         v-icon(icon="mdi mdi-magnify").mr-2.text-white
       router-link(to="#")
@@ -40,6 +42,16 @@ import {defineComponent, onMounted, ref} from "vue";
 import {cookie} from "@/common";
 
 const HeaderBar = defineComponent({
+  props: {
+    userInfor: {
+      type: Object,
+      // eslint-disable-next-line vue/require-valid-default-prop
+      default: {
+        fullname: ''
+      },
+      required: true
+    }
+  },
   setup(){
     const introduceList = ref([
       {

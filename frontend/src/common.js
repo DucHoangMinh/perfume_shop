@@ -30,10 +30,16 @@ const cookie = {
     Cookies.set('user', JSON.stringify(user), {secure: true})
   },
   getUser: () => {
-    return JSON.parse(Cookies.get('user') || '{}')
+    return JSON.parse(Cookies.get('user') || null)
+  },
+  setToken: (token) => {
+    Cookies.set('token', JSON.stringify(token), {secure: true})
+  },
+  getToken: () => {
+    return JSON.parse(Cookies.get('token') || null)
   }
 }
-
+axios.defaults.headers.common['token'] = cookie.getToken()
 const api = {
   get: async (endpoint) => {
     return await axios.get(`http://127.0.0.1:5000${endpoint}`)
@@ -53,6 +59,7 @@ const checkAuthenticated = async () => {
     return true
   }catch (err) {
     Cookies.remove('user')
+    Cookies.remove('token')
     store.commit('setAuthenticated', false)
     return false
   }
@@ -61,6 +68,7 @@ const handleLogout = async () => {
   try {
     // const { data } = await api.post('/user/logout')
     Cookies.remove('user')
+    Cookies.remove('token')
     store.commit('setAuthenticated', false)
   }catch (err) {
     showNotification.error('Có lỗi hệ thống, vui lòng đóng trình duyệt và truy cập lại!')

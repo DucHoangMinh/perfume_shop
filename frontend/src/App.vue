@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <header-bar></header-bar>
+      <header-bar :user-infor="userInfor"></header-bar>
       <router-view />
       <notifications duration="5" class="ma-2">
         <template #body="props">
@@ -21,9 +21,9 @@
 
 <script lang="js">
 import HeaderBar from "@/components/Header.vue"
-import {defineComponent, onMounted} from "vue";
+import {defineComponent, onMounted, ref} from "vue";
 import {Notifications} from "@kyvg/vue3-notification";
-import {checkAuthenticated, handleLogout} from "@/common";
+import {checkAuthenticated, cookie, handleLogout} from "@/common";
 const App = defineComponent({
   components: {
     Notifications,
@@ -41,9 +41,9 @@ const App = defineComponent({
         return "#2ecc71"
       }
     }
+    const userInfor = ref(cookie.getUser())
     const handleCheckAuthenticated = async () => {
       let result = await checkAuthenticated()
-      console.log(result)
       if(!result){
         await handleLogout()
       }
@@ -52,7 +52,8 @@ const App = defineComponent({
       await handleCheckAuthenticated()
     })
     return {
-      handleStyle
+      handleStyle,
+      userInfor
     }
   }
 })
