@@ -3,11 +3,28 @@ from playhouse.shortcuts import model_to_dict
 
 from flask import Blueprint, request, jsonify
 from models.User import User
-from pprint import  pprint
+from pprint import pprint
+from functools import wraps
 import jwt
 import datetime
 
 user_router = Blueprint('user_router', __name__, url_prefix="/user")
+SECRET_KEY = '0805DB9201224F33D1959086D1D4A1E9'
+
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get('token')
+        print(token)
+        if not token:
+            return 'Token is missing', 403
+        try:
+            data = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        except:
+            return 'Token is invalid', 403
+        return f(*args, **kwargs)
+    return decorated
 
 
 @user_router.get("/<id>")
@@ -33,9 +50,13 @@ def handle_login():
         try_password = attempt_user.checkPassword(request.json['password'], hash_password=attempt_user.password_hash)
         if (try_password):
             login_user(attempt_user)
-            return model_to_dict(User.get_by_id(attempt_user.id,
-                                                fields=[User.id, User.username, User.fullname, User.email, User.gender,
-                                                        User.address, User.phone])), 200
+            token = jwt.encode(
+                {'user': attempt_user.username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},
+                SECRET_KEY)
+            return {'user': model_to_dict(User.get_by_id(attempt_user.id,
+                                                         fields=[User.id, User.username, User.fullname, User.email,
+                                                                 User.gender,
+                                                                 User.address, User.phone])), 'token': token}, 200
         else:
             return 'Sai mật khẩu, vui lòng thử lại!', 400
     return 'Không tìm thấy tài khoản tương ứng với email!', 404
@@ -49,7 +70,6 @@ def logout():
 
 
 @user_router.get("/check_authenticated")
-@login_required
+@token_required
 def test_login_required():
-    pprint(request.cookies)
     return 'You are now login!', 200
