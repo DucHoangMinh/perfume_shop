@@ -23,9 +23,16 @@ class PerfumeDetail(BaseModel):
 
     @classmethod
     def create_perfume_detail(cls, perfume_detail_create):
+        required_properties = ["name", "branch", "fragnant", "volume", "concentration", "gender", "price",
+                               "description", "images", "ingredients", "notes"]
+        for prop in required_properties:
+            if prop not in perfume_detail_create or perfume_detail_create[prop] is None:
+                return f"Thuộc tính '{prop}' là bắt buộc và không được để trống", 400
+
         check_perfume_by_name = cls.get_by_property("name", perfume_detail_create["name"])
         if check_perfume_by_name:
-            return f"Loại nước hoa {perfume_detail_create["name"]} đã đã tồn tại trong hệ thống!", 400
+            return f"Loại nước hoa {perfume_detail_create['name']} đã tồn tại trong hệ thống!", 400
+
         perfume_detail = cls(
             name=perfume_detail_create["name"],
             branch=perfume_detail_create["branch"],

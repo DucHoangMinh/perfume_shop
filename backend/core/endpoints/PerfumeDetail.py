@@ -5,6 +5,7 @@ perfume_detail_router = Blueprint('perfume_detail_router', __name__, url_prefix=
 from . import token_required
 
 @perfume_detail_router.get("/<id>")
+@token_required
 def get_perfume_detail(id: int):
     perfume_detail = PerfumeDetail.get_by_id(id)
     print(perfume_detail.branch)
@@ -16,3 +17,12 @@ def get_perfume_detail(id: int):
 def create_perfume_detail():
     perfume_detail_create = request.json
     return PerfumeDetail.create_perfume_detail(perfume_detail_create=perfume_detail_create)
+
+
+@perfume_detail_router.patch("/<id>")
+@token_required
+def patch_perfume_detail(id: int):
+    try:
+        return PerfumeDetail.update_one(id, request.json)
+    except Exception as e:
+        return {'message': str(e)}, 400
