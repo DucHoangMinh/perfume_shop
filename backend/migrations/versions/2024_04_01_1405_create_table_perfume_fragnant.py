@@ -23,7 +23,8 @@ def upgrade() -> None:
         CREATE TABLE perfume_fragnant(
             id BIGSERIAL PRIMARY KEY,
             name_en VARCHAR(255) UNIQUE NOT NULL,
-            name_vn VARCHAR(255) UNIQUE NOT NULL
+            name_vn VARCHAR(255) UNIQUE NOT NULL,
+            is_action BOOLEAN NOT NULL DEFAULT TRUE
         )
     '''
 

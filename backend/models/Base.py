@@ -24,7 +24,7 @@ class BaseModel(Model):
         query = query.where(cls.id == id)
         try:
             return list(query)[0]  # Trả về dict chứa các trường được truy xuất
-        except cls.DoesNotExist:
+        except Exception as e:
             return None
 
     @classmethod

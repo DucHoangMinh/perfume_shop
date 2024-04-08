@@ -23,8 +23,8 @@ def upgrade() -> None:
         CREATE TABLE perfume_detail(
             id BIGSERIAL PRIMARY KEY,
             name VARCHAR(255) UNIQUE NOT NULL,
-            branch BIGINT NOT NULL,
-            fragnant BIGINT NOT NULL,
+            branch_id BIGINT NOT NULL,
+            fragnant_id BIGINT NOT NULL,
             volume INT NOT NULL,
             concentration INT NOT NULL,
             gender BOOLEAN NOT NULL,
@@ -32,7 +32,8 @@ def upgrade() -> None:
             description TEXT NOT NULL,
             images jsonb DEFAULT '[]',
             ingredients jsonb DEFAULT '[]',
-            notes TEXT NOT NULL
+            notes TEXT NOT NULL,
+            is_active BOOLEAN NOT NULL
         );
         ALTER TABLE perfume_detail ADD CONSTRAINT pkey_branch FOREIGN KEY (branch) REFERENCES perfume_branch(id);
         ALTER TABLE perfume_detail ADD CONSTRAINT pkey_fragnant FOREIGN KEY (fragnant) REFERENCES perfume_fragnant(id);

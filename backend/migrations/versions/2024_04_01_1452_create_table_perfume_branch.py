@@ -26,7 +26,8 @@ def upgrade() -> None:
             founded_year DATE NOT NULL,
             country_of_origin VARCHAR(255) NOT NULL,
             website VARCHAR(255) NOT NULL UNIQUE,
-            email VARCHAR(255) NOT NULL UNIQUE
+            email VARCHAR(255) NOT NULL UNIQUE,
+            is_action BOOLEAN NOT NULL DEFAULT TRUE
         );
     '''
 
