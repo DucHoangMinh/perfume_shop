@@ -26,3 +26,12 @@ def patch_perfume_detail(id: int):
         return PerfumeDetail.update_one(id, request.json)
     except Exception as e:
         return {'message': str(e)}, 400
+
+
+@perfume_detail_router.delete("/<id>")
+@token_required
+def soft_delete_perfume_detail(id: int):
+    try:
+        return PerfumeDetail.soft_delete(id)
+    except Exception as e:
+        return {'message': str(e)}, 400

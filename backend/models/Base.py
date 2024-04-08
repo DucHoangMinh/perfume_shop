@@ -53,3 +53,14 @@ class BaseModel(Model):
         except DoesNotExist:
             return "Does not exist", 404
 
+    @classmethod
+    def soft_delete(cls, id:int):
+        try:
+            data_update = {
+                'is_active': False
+            }
+            data = cls.update_one(id, data_update=data_update)
+            return data
+        except Exception as e:
+            return {'message': str(e)}, 400
+
