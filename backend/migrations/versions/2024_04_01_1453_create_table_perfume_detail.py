@@ -21,7 +21,7 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     return '''
         CREATE TABLE perfume_detail(
-            id BIGSERIAL PRIMARY KEY,
+            id BIGSERIAL PRIMARY KEY UNIQUE NOT NULL ,
             name VARCHAR(255) UNIQUE NOT NULL,
             branch_id BIGINT NOT NULL,
             fragnant_id BIGINT NOT NULL,

@@ -8,7 +8,7 @@ from . import token_required
 @token_required
 def get_perfume_detail(id: int):
     perfume_detail = PerfumeDetail.get_by_id(id)
-    return jsonify(perfume_detail)
+    return model_to_dict(perfume_detail)
 
 
 @perfume_detail_router.post("/")

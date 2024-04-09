@@ -12,11 +12,15 @@ def get_all_perfume_branches():
     return PerfumeBranch.get_all()
 
 
+@perfume_branch_router.post("/")
+@token_required
+def create_perfume_branch():
+    perfume_branch_create = request.json
+    return PerfumeBranch.create_perfume_branch(perfume_branch_create=perfume_branch_create)
+
+
 @perfume_branch_router.get("/<id>")
 @token_required
 def get_perfume_branch(id: int):
-    print(id)
     perfume_branch = PerfumeBranch.get_by_id(id)
-    print(perfume_branch)
-    print(type(perfume_branch))
-    return "nam"
+    return model_to_dict(perfume_branch)

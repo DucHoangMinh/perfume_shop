@@ -1,12 +1,12 @@
 from http.client import HTTPException
 from playhouse.shortcuts import model_to_dict, dict_to_model
-from peewee import Model, DateTimeField, BigIntegerField, BooleanField, AutoField, DoesNotExist
+from peewee import Model, DateTimeField, BigIntegerField, BooleanField, AutoField, DoesNotExist, BigAutoField
 from config.database import db
 import datetime
 
 
 class BaseModel(Model):
-    id = AutoField(),
+    # id = BigAutoField(column_name="id", primary_key=True, unique=True, null=False),
     created_at = DateTimeField(default=datetime.datetime.now),
     created_by = BigIntegerField(),
     modified_at = DateTimeField(default=datetime.datetime.now()),
@@ -30,12 +30,13 @@ class BaseModel(Model):
             return None
 
     @classmethod
-    def get_by_id(cls, id, fields=None):
+    def _get_by_id(cls, id:int, fields=None):
+        print("Get item by id: ", id)
         query = cls.select()
         if fields:
             query = query.select(*fields)
-        print(list(query))
         query = query.where(cls.id == id)
+        print(list(query))
         try:
             return list(query)[0]  # Trả về dict chứa các trường được truy xuất
         except Exception as e:

@@ -24,14 +24,15 @@ def token_required(f):
         except:
             return 'Token is invalid', 403
         return f(*args, **kwargs)
+
     return decorated
 
 
 @user_router.get("/<id>")
 def get_user_by_id(id: int):
     try:
-        return User.get_by_id(id, fields=[User.id, User.username, User.fullname,
-                                          User.role, User.phone, User.address])
+        return model_to_dict(User._get_by_id(id, fields=[User.id, User.username, User.fullname,
+                                                         User.role, User.phone, User.address]))
     except User.DoesNotExist:
         return {'message': 'User does not exist'}, 404
 
@@ -53,7 +54,7 @@ def handle_login():
             token = jwt.encode(
                 {'user': attempt_user.username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=300000)},
                 SECRET_KEY)
-            return {'user': model_to_dict(User.get_by_id(attempt_user.id,
+            return {'user': model_to_dict(User._get_by_id(attempt_user.id,
                                                          fields=[User.id, User.username, User.fullname, User.email,
                                                                  User.gender,
                                                                  User.address, User.phone])), 'token': token}, 200
