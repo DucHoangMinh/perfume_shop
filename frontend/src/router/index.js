@@ -18,6 +18,11 @@ const router = createRouter({
     {
         path: '/:catchAll(.*)',
         component: Error
+    },
+    //Admin Routes
+    {
+      path: '/admin',
+      component: () => import('@/pages/Admin/Home/index.vue'),
     }
   ]
 })

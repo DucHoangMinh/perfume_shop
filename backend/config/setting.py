@@ -1,7 +1,7 @@
-POSTGRES_DB = 'siofpuhr'
-POSTGRES_HOST = 'rain.db.elephantsql.com'
-POSTGRES_USER = 'siofpuhr'
-POSTGRES_PASSWORD = 'tkeUl2ELpJck0y1w-8VBU_bde3N2yCfa'
+POSTGRES_DB = 'default'
+POSTGRES_HOST = 'localhost'
+POSTGRES_USER = 'user'
+POSTGRES_PASSWORD = 'password'
 POSTGRES_PORT = '5432'
 
 roles = {

@@ -19,11 +19,22 @@ class BaseModel(Model):
         database = db
 
     @classmethod
+    def get_all(cls):
+        query = cls.select()
+        response = []
+        for item in query:
+            response.append(model_to_dict(item))
+        try:
+            return response
+        except Exception as e:
+            return None
+
+    @classmethod
     def get_by_id(cls, id, fields=None):
         query = cls.select()
-        # Nếu fields được cung cấp, chỉ chọn các trường cụ thể đó
         if fields:
             query = query.select(*fields)
+        print(list(query))
         query = query.where(cls.id == id)
         try:
             return list(query)[0]  # Trả về dict chứa các trường được truy xuất

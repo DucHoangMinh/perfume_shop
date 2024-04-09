@@ -35,8 +35,8 @@ def upgrade() -> None:
             notes TEXT NOT NULL,
             is_active BOOLEAN NOT NULL
         );
-        ALTER TABLE perfume_detail ADD CONSTRAINT pkey_branch FOREIGN KEY (branch) REFERENCES perfume_branch(id);
-        ALTER TABLE perfume_detail ADD CONSTRAINT pkey_fragnant FOREIGN KEY (fragnant) REFERENCES perfume_fragnant(id);
+        ALTER TABLE perfume_detail ADD CONSTRAINT pkey_branch FOREIGN KEY (branch_id) REFERENCES perfume_branch(id);
+        ALTER TABLE perfume_detail ADD CONSTRAINT pkey_fragnant FOREIGN KEY (fragnant_id) REFERENCES perfume_fragnant(id);
 
     '''
 
