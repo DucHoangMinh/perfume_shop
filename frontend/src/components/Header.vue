@@ -2,12 +2,12 @@
 div.header.d-flex.justify-space-around.align-end.position-relative
   v-menu.introduceMenu(open-on-hover)
     template(v-slot:activator="{ props }")
-      p.menu-text(v-bind="props").text-white.cursor-pointer Giới thiệu
+      p.menu-text(v-bind="props").text-white.cursor-pointer.mb-3 Giới thiệu
     v-card.mx-auto(max-width="330")
       v-list(:items="introduceList").cursor-pointer
   v-menu.perfumeMenu(open-on-hover)
     template(v-slot:activator="{ props }")
-      p.menu-text(v-bind="props").text-white.cursor-pointer Nước hoa
+      p.menu-text(v-bind="props").text-white.cursor-pointer.mb-3 Nước hoa
     v-card.mx-auto(max-width="330")
       v-list(:items="perfumeList").cursor-pointer
   .logo.cursor-pointer
@@ -15,12 +15,12 @@ div.header.d-flex.justify-space-around.align-end.position-relative
       img.logo-image(src="../assets/logo.svg")
   v-menu.otherProductMenu(open-on-hover)
     template(v-slot:activator="{ props }")
-      p.menu-text(v-bind="props").text-white.cursor-pointer Sản phẩm khác
+      p.menu-text(v-bind="props").text-white.cursor-pointer.mb-3 Sản phẩm khác
     v-card.mx-auto(max-width="330")
       v-list(:items="otherProductsList").cursor-pointer
   v-menu.saleList(open-on-hover)
     template(v-slot:activator="{ props }")
-      p.menu-text(v-bind="props").text-white.cursor-pointer Ưu đãi
+      p.menu-text(v-bind="props").text-white.cursor-pointer.mb-3 Ưu đãi
     v-card.mx-auto(max-width="330")
       v-list(:items="saleList").cursor-pointer
   .sub-function
@@ -126,9 +126,9 @@ v-list
   background-color: aqua
 .sub-function
   position: absolute
-  top: 30%
+  top: 25%
   font-size: 18px
-  right: 10%
+  right: 7.5%
 .divider
   height: 2px
   background-color: white
