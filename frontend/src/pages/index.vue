@@ -6,12 +6,20 @@ div.home-page
       .d-flex.justify-space-between(style="width: 99vw")
         v-icon.slider-button(icon="mdi-chevron-left" @click="() => handleOtherPhoto('prev')" style="font-size: 80px; opacity: 0.7")
         v-icon.slider-button(icon="mdi-chevron-right" @click="() => handleOtherPhoto('next')" style="font-size: 80px; opacity: 0.7")
+  v-container
+    perfume-list-introduce(
+      perfume-list-name="Ưu đãi"
+    )
 </template>
 
 <script lang="js">
 import {defineComponent, ref} from "vue";
 import {slider_banner_images} from "@/assets/assets";
+import PerfumeListIntroduce from "@/components/PerfumeListIntroduce/index.vue";
 const HomePage = defineComponent({
+  components: {
+    PerfumeListIntroduce
+  },
   setup(){
     const currentSliderImageIndex = ref(0)
     const handleOtherPhoto = (type) => {
