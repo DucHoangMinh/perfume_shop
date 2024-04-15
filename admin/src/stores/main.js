@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import axios from 'axios'
+import {api} from "@/common";
 
 export const useMainStore = defineStore('main', () => {
   const userName = ref('John Doe')
@@ -28,15 +29,9 @@ export const useMainStore = defineStore('main', () => {
     }
   }
 
-  function fetchSampleClients() {
-    axios
-      .get(`data-sources/clients.json?v=3`)
-      .then((result) => {
-        clients.value = result?.data?.data
-      })
-      .catch((error) => {
-        alert(error.message)
-      })
+   async function fetchSampleClients() {
+    const { data } = await api.get('/perfume_detail/all')
+    clients.value = data
   }
 
   function fetchSampleHistory() {

@@ -3,11 +3,11 @@ import { computed, ref } from 'vue'
 import { useMainStore } from '@/stores/main'
 import { mdiEye, mdiTrashCan } from '@mdi/js'
 import CardBoxModal from '@/components/CardBoxModal.vue'
-import TableCheckboxCell from '@/components/TableCheckboxCell.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
+import PerfumeDetailModel from "@/components/PerfumeDetailModel.vue";
 
 defineProps({
   checkable: Boolean
@@ -57,16 +57,10 @@ const remove = (arr, cb) => {
   return newArr
 }
 
-const checked = (isChecked, client) => {
-  if (isChecked) {
-    checkedRows.value.push(client)
-  } else {
-    checkedRows.value = remove(checkedRows.value, (row) => row.id === client.id)
-  }
-}
 </script>
 
 <template>
+  <PerfumeDetailModel :title="'Thêm sản phẩm mới'" :model-value="true"></PerfumeDetailModel>
   <CardBoxModal v-model="isModalActive" title="Sample modal">
     <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
     <p>This is sample modal</p>
@@ -98,20 +92,16 @@ const checked = (isChecked, client) => {
           {{ client.name }}
         </td>
         <td data-label="Company">
-          {{ client.company }}
+          {{ client.branch.name }}
         </td>
         <td data-label="City" class="lg:w-32">
-          {{ client.city }}
+          {{ client.volume }} ml
         </td>
         <td data-label="Progress" class="lg:w-32">
-          <progress class="flex w-2/5 self-center lg:w-full" max="100" :value="client.progress">
-            {{ client.progress }}
-          </progress>
+          {{ client.gender ? 'Nam' : 'Nữ'}}
         </td>
         <td data-label="Created" class="lg:w-32 whitespace-nowrap">
-          <small class="text-gray-500 dark:text-slate-400" :title="client.created">{{
-            client.created
-          }}</small>
+           {{ client?.created_at || 'Không xác định'}}
         </td>
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>

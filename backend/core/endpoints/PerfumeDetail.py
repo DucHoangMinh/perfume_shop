@@ -1,8 +1,10 @@
 from flask import Blueprint, request, jsonify
 from playhouse.shortcuts import model_to_dict
 from models.PerfumeDetail import PerfumeDetail
+
 perfume_detail_router = Blueprint('perfume_detail_router', __name__, url_prefix='/perfume_detail')
 from . import token_required
+
 
 @perfume_detail_router.get("/<id>")
 @token_required
@@ -34,3 +36,9 @@ def soft_delete_perfume_detail(id: int):
         return PerfumeDetail.soft_delete(id)
     except Exception as e:
         return {'message': str(e)}, 400
+
+
+@perfume_detail_router.get("/all")
+@token_required
+def get_all_perfume_details():
+    return PerfumeDetail.get_all()
