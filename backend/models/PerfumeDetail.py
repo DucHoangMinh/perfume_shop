@@ -7,8 +7,8 @@ from models.PerfumeBranch import PerfumeBranch
 
 class PerfumeDetail(BaseModel):
     name = CharField(null=False, unique=True, max_length=30)
-    branch = ForeignKeyField(PerfumeBranch, backref='id', column_name="branch_id")
-    fragnant = ForeignKeyField(PerfumeFragnant, backref='id', column_name="fragnant_id")
+    branch = ForeignKeyField(PerfumeBranch, backref='perfumedetails', column_name="branch_id")
+    fragnant = ForeignKeyField(PerfumeFragnant, backref='perfumedetails', column_name="fragnant_id")
     volume = IntegerField(null=False)
     concentration = IntegerField(null=False)
     gender = CharField(null=False, max_length=10)

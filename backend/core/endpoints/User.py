@@ -52,7 +52,7 @@ def handle_login():
         if (try_password):
             login_user(attempt_user)
             token = jwt.encode(
-                {'user': attempt_user.username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=300000)},
+                {'user': attempt_user.username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=9000)},
                 SECRET_KEY)
             return {'user': model_to_dict(User._get_by_id(attempt_user.id,
                                                          fields=[User.id, User.username, User.fullname, User.email,

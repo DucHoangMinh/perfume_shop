@@ -6,7 +6,7 @@ import datetime
 
 
 class BaseModel(Model):
-    # id = BigAutoField(column_name="id", primary_key=True, unique=True, null=False),
+    id = BigAutoField(column_name="id", primary_key=True, unique=True, null=False),
     created_at = DateTimeField(default=datetime.datetime.now),
     created_by = BigIntegerField(),
     modified_at = DateTimeField(default=datetime.datetime.now()),
@@ -23,6 +23,7 @@ class BaseModel(Model):
         query = cls.select()
         response = []
         for item in query:
+            print(model_to_dict(item))
             response.append(model_to_dict(item))
         try:
             return response
