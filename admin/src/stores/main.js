@@ -19,6 +19,9 @@ export const useMainStore = defineStore('main', () => {
 
   const clients = ref([])
   const history = ref([])
+  const perfumeBranches = ref([])
+  const perfumeFragnant = ref([])
+
 
   function setUser(payload) {
     if (payload.name) {
@@ -33,6 +36,17 @@ export const useMainStore = defineStore('main', () => {
     const { data } = await api.get('/perfume_detail/all')
     clients.value = data
   }
+
+  async function fetchListBranch(){
+    const { data } = await api.get('/perfume_branch/')
+    perfumeBranches.value = data
+  }
+
+  async function fetchListFragnant(){
+    const { data } = await api.get('/perfume_fragnant/')
+    perfumeFragnant.value = data
+  }
+
 
   function fetchSampleHistory() {
     axios
@@ -54,6 +68,10 @@ export const useMainStore = defineStore('main', () => {
     history,
     setUser,
     fetchSampleClients,
-    fetchSampleHistory
+    fetchSampleHistory,
+    perfumeBranches,
+    fetchListBranch,
+    perfumeFragnant,
+    fetchListFragnant
   }
 })

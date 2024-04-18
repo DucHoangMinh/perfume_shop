@@ -49,6 +49,7 @@ const submit = (event) => {
     :is="isForm ? 'form' : 'div'"
     :class="componentClass"
     class="bg-white flex"
+    style="overflow-y: scroll"
     @submit="submit"
   >
     <slot v-if="hasComponentLayout" />

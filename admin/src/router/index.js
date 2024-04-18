@@ -27,7 +27,7 @@ const routes = [
     },
     path: '/tables',
     name: 'tables',
-    component: () => import('@/views/TablesView.vue')
+    component: () => import('@/views/ProductsView.vue')
   },
   {
     meta: {

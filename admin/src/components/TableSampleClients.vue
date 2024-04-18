@@ -7,7 +7,6 @@ import BaseLevel from '@/components/BaseLevel.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
-import PerfumeDetailModel from "@/components/PerfumeDetailModel.vue";
 
 defineProps({
   checkable: Boolean
@@ -60,7 +59,6 @@ const remove = (arr, cb) => {
 </script>
 
 <template>
-  <PerfumeDetailModel :title="'Thêm sản phẩm mới'" :model-value="true"></PerfumeDetailModel>
   <CardBoxModal v-model="isModalActive" title="Sample modal">
     <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
     <p>This is sample modal</p>

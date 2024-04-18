@@ -12,21 +12,182 @@ overlay-layer(v-show="value" )
         color="whiteDark"
         small
         rounded-full
-        @click.prevent="cancel"
+        @click="handleCancelAddPerfume"
       )
     .space-y-3
-      p Hahaha
-      slot
+      v-col(cols="12").w-full.pa-0
+        v-text-field(
+          hide-details
+          label="Tên"
+          density="comfortable"
+          :counter="10"
+          required
+          type="text"
+          v-model="perfumeDetail.name"
+          variant="outlined"
+        )
+      v-col(cols="12").w-full.pa-0
+        v-select(
+          :items="perfumeBranches"
+          variant="outlined"
+          label="Thương hiệu"
+          hide-details
+          item-title="name"
+          v-model="perfumeDetail.branch"
+          item-value="id"
+          density="comfortable"
+        )
+      v-col(cols="12").w-full.pa-0
+        v-select(
+          :items="perfumeFragnants"
+          variant="outlined"
+          label="Mùi hương"
+          v-model="perfumeDetail.fragnant"
+          item-title="name_vn"
+          item-value="id"
+          density="comfortable"
+          hide-details
+        )
+      v-col(cols="12").w-full.pa-0
+        v-text-field(
+          hide-details
+          label="Lưu lượng (ml)"
+          v-model="perfumeDetail.volume"
+          density="comfortable"
+          :counter="10"
+          required
+          type="number"
+          variant="outlined"
+        )
+      v-col(cols="12").w-full.pa-0
+        v-text-field(
+          hide-details
+          label="Nồng độ (%)"
+          v-model="perfumeDetail.concentration"
+          density="comfortable"
+          :counter="10"
+          required
+          type="number"
+          variant="outlined"
+        )
+      v-col(cols="12").d-flex.align-center.py-0.justify-space-between
+        p.mr-2 Giới tính
+        div
+          form-check-radio.mr-2(:model-value="perfumeDetail.gender" :input-value="true" name="Hehe" type="radio" label="Nam")
+          form-check-radio(:model-value="perfumeDetail.gender" :input-value="false" name="Hehe" type="radio" label="Nữ")
+      v-col(cols="12").w-full.pa-0
+        v-text-field(
+          hide-details
+          label="Giá (VND)"
+          density="comfortable"
+          :counter="10"
+          required
+          type="number"
+          variant="outlined"
+        )
+      v-col(cols="12").w-full.pa-0
+        v-label.mr-2 Tải lên ít nhất 3 ảnh sản phẩm
+        input(id="image-upload" type="file" accept="image/jpeg" @change="handleUploadImage")
+        div.image-show-wrapper.d-flex
+          div(v-for="(item,index) in imageUploadLinkList").pa-2.position-relatives
+            img(:src="item" style="width: 200px;")
+            base-icon(:path="mdiMinus" ).remove-img-button(@click="() => handleRemoveImage(index)" icon="fa-regular fa-circle-xmark")
+      v-col(cols="12").w-full.pa-0
+        v-textarea(
+          hide-details
+          label="Mô tả"
+          rows="2"
+          density="comfortable"
+          :counter="10"
+          required
+          type="number"
+          variant="outlined"
+        )
+      v-col(cols="12").w-full.pa-0
+        v-textarea(
+          hide-details
+          label="Lưu ý"
+          rows="2"
+          density="comfortable"
+          :counter="10"
+          required
+          type="number"
+          variant="outlined"
+        )
+      v-row.w-full.pa-0.d-flex.justify-space-around
+        .v-col-3.text-center
+          v-btn(variant="outlined" color="red" @click="handleCancelAddPerfume").w-100 Hủy
+        .v-col-3.text-center
+          v-btn(variant="outlined" color="primary" @click="uploadPerfumeDetail").w-100 Thêm
 
 </template>
 <script setup lang="js">
-import {computed} from "vue";
+import {computed, onMounted, ref} from "vue";
 import OverlayLayer from "@/components/OverlayLayer.vue";
 import CardBox from "@/components/CardBox.vue";
 import CardBoxComponentTitle from "@/components/CardBoxComponentTitle.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import {mdiClose} from "@mdi/js";
+import {useMainStore} from "@/stores/main";
+import BaseIcon from "@/components/BaseIcon.vue";
+import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
+import FormCheckRadio from "@/components/FormCheckRadio.vue";
+import firebaseService from "@/services/firebase";
+import {api} from "@/common";
 
+const store = useMainStore()
+const perfumeBranches = computed(() => store.perfumeBranches)
+const perfumeFragnants = computed(() => store.perfumeFragnant)
+
+const imageUploadLinkList = ref([])
+const imageUpLoadList = ref([])
+
+const perfumeDetail = ref({
+  name: "",
+  branch: 1,
+  fragnant: 1,
+  volume: 0,
+  concentration: 0,
+  price: 0,
+  description: "",
+  images: null,
+  ingredients: "",
+  notes: "",
+  gender: true
+})
+
+const handleUploadImage = (e) => {
+  let selected = e.target.files[0]
+  let objectUrl = URL.createObjectURL(selected)
+  imageUploadLinkList.value.push(objectUrl)
+  imageUpLoadList.value.push(selected)
+}
+const handleRemoveImage = (index) => {
+  imageUploadLinkList.value.splice(index,1);
+  imageUpLoadList.value.splice(index,1);
+}
+const validateEnoughImage = () => {
+  return imageUpLoadList.value.length <= 5
+}
+const uploadImageToFirebase = async () => {
+  if(validateEnoughImage()){
+    imageUploadLinkList.value =[]
+    for(let i = 0; i < imageUpLoadList.value.length; i++){
+      let data = await firebaseService.upload(imageUpLoadList.value[i])
+      imageUploadLinkList.value.push(data)
+    }
+  }
+  console.log(imageUploadLinkList.value)
+}
+const uploadPerfumeDetail = async () => {
+  try {
+    await uploadImageToFirebase()
+    perfumeDetail.value.images = imageUploadLinkList.value
+    await api.post('/perfume_detail/', perfumeDetail.value)
+  } catch (e) {
+    console.log(e)
+  }
+}
 const props = defineProps({
   modelValue: {
     type: [String, Number, Boolean],
@@ -38,15 +199,31 @@ const props = defineProps({
   },
   hasCancel: Boolean
 })
-const emit = defineEmits(['update:modelValue', 'cancel', 'confirm'])
+const emit = defineEmits(['update:modelValue', 'confirm', 'cancel-add-perfume'])
 
 const value = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value)
 })
-
+const handleCancelAddPerfume = () => {
+  emit('cancel-add-perfume')
+}
+onMounted(() => {
+  console.log(perfumeBranches.value)
+})
 
 </script>
 <style lang="sass">
-
+.remove-img-button
+  position: absolute
+  top: 0px
+  right: -4px
+  font-size: 24px
+  color: white
+  font-weight: bold
+  background-color: red
+  border-radius: 50%
+  cursor: pointer
+.remove-img-button:hover
+  opacity: 0.7
 </style>
