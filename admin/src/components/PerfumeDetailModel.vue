@@ -1,5 +1,5 @@
 <template lang="pug">
-overlay-layer(v-show="value" )
+overlay-layer(v-show="value")
   card-box(
     v-show="value"
     class="shadow-lg max-h-modal w-11/12 md:w-3/5 lg:w-2/5 xl:w-4/12 z-50"
@@ -184,6 +184,7 @@ const uploadPerfumeDetail = async () => {
     await uploadImageToFirebase()
     perfumeDetail.value.images = imageUploadLinkList.value
     await api.post('/perfume_detail/', perfumeDetail.value)
+    emit('upload-success')
   } catch (e) {
     console.log(e)
   }
@@ -199,7 +200,7 @@ const props = defineProps({
   },
   hasCancel: Boolean
 })
-const emit = defineEmits(['update:modelValue', 'confirm', 'cancel-add-perfume'])
+const emit = defineEmits(['upload-success','update:modelValue', 'confirm', 'cancel-add-perfume'])
 
 const value = computed({
   get: () => props.modelValue,

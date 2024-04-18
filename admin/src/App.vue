@@ -1,6 +1,18 @@
 <script setup>
 import { RouterView } from 'vue-router'
 import {Notifications} from "@kyvg/vue3-notification";
+import CommonLoader from "@/components/CommonLoader.vue";
+const handleStyle = (props) => {
+  if(props.type === "error"){
+    return "#e14d45"
+  }
+  if(props.type === "warn"){
+    return "#ed991d"
+  }
+  if(props.type === "success"){
+    return "#2ecc71"
+  }
+}
 </script>
 
 <template>
@@ -17,6 +29,7 @@ import {Notifications} from "@kyvg/vue3-notification";
       </div>
     </template>
   </notifications>
+  <CommonLoader></CommonLoader>
 </template>
 <style lang="sass">
 .my-notification

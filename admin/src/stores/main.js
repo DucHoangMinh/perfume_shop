@@ -21,7 +21,7 @@ export const useMainStore = defineStore('main', () => {
   const history = ref([])
   const perfumeBranches = ref([])
   const perfumeFragnant = ref([])
-
+  const isLoading = ref(false)
 
   function setUser(payload) {
     if (payload.name) {
@@ -59,6 +59,10 @@ export const useMainStore = defineStore('main', () => {
       })
   }
 
+  function setLoading(value){
+    isLoading.value = value
+  }
+
   return {
     userName,
     userEmail,
@@ -72,6 +76,8 @@ export const useMainStore = defineStore('main', () => {
     perfumeBranches,
     fetchListBranch,
     perfumeFragnant,
-    fetchListFragnant
+    fetchListFragnant,
+    isLoading,
+    setLoading
   }
 })

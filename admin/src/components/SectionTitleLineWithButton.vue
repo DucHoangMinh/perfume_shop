@@ -17,6 +17,8 @@ defineProps({
   main: Boolean
 })
 
+const emit = defineEmits(['open-modal'])
+
 const hasSlot = computed(() => useSlots().default)
 </script>
 
@@ -30,6 +32,6 @@ const hasSlot = computed(() => useSlots().default)
       </h1>
     </div>
     <slot v-if="hasSlot" />
-    <base-button :label="'Thêm sản phẩm'" :icon="mdiPlus"></base-button>
+    <base-button @click="emit('open-modal')" :label="'Thêm sản phẩm'" :icon="mdiPlus"></base-button>
   </section>
 </template>
