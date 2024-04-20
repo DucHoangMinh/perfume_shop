@@ -18,10 +18,6 @@ const mainStore = useMainStore()
 
 const items = computed(() => mainStore.clients)
 
-const isModalActive = ref(false)
-
-const isModalDangerActive = ref(false)
-
 const perPage = ref(5)
 
 const currentPage = ref(0)
@@ -61,16 +57,6 @@ const remove = (arr, cb) => {
 </script>
 
 <template>
-  <CardBoxModal v-model="isModalActive" title="Sample modal">
-    <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
-    <p>This is sample modal</p>
-  </CardBoxModal>
-
-  <CardBoxModal v-model="isModalDangerActive" title="Please confirm" button="danger" has-cancel>
-    <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
-    <p>This is sample modal</p>
-  </CardBoxModal>
-
   <table>
     <thead>
       <tr>

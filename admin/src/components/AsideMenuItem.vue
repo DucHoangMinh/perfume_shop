@@ -59,7 +59,7 @@ const menuClick = (event) => {
         :path="item.icon"
         class="flex-none"
         :class="[vSlot && vSlot.isExactActive ? asideMenuItemActiveStyle : '']"
-        w="w-16"
+        w="w-8"
         :size="18"
       />
       <span

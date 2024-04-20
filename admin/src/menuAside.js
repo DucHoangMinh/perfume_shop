@@ -10,7 +10,7 @@ import {
   mdiTelevisionGuide,
   mdiResponsive,
   mdiPalette,
-  mdiReact
+  mdiReact, mdiAlphaBBoxOutline, mdiAlphaMBoxOutline
 } from '@mdi/js'
 
 export default [
@@ -35,13 +35,19 @@ export default [
     icon: mdiTelevisionGuide
   },
   {
-    to: '/responsive',
-    label: 'Responsive',
-    icon: mdiResponsive
-  },
-  {
-    to: '/',
-    label: 'Styles',
-    icon: mdiPalette
+    label: "Dữ liệu chính",
+    icon: mdiViewList,
+    menu: [
+      {
+        label: "Thương hiệu",
+        to: "/branch",
+        icon: mdiAlphaBBoxOutline
+      },
+      {
+        label: "Mùi hương",
+        to: "/fragrant",
+        icon: mdiAlphaMBoxOutline
+      }
+    ]
   }
 ]

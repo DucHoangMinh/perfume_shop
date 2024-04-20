@@ -71,11 +71,27 @@ const routes = [
   },
   {
     meta: {
-      title: 'Error'
+      title: 'Branch',
     },
-    path: '/error',
-    name: 'error',
-    component: () => import('@/views/ErrorView.vue')
+    path: '/branch',
+    name: 'branch',
+    component: () => import('@/views/DatataMaster/Branch/index.vue')
+  },
+  {
+    meta: {
+      title: 'Fragrant'
+    },
+    path: '/fragrant',
+    name: 'fragrant',
+    component: () => import('@/views/DatataMaster/Fragrant/index.vue')
+  },
+  {
+    meta: {
+      title: 'Error',
+      path: '/error',
+      name: 'error',
+      component: () => import('@/views/ErrorView.vue')
+    }
   }
 ]
 

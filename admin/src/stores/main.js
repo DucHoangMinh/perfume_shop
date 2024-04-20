@@ -22,6 +22,8 @@ export const useMainStore = defineStore('main', () => {
   const perfumeBranches = ref([])
   const perfumeFragnant = ref([])
   const isLoading = ref(false)
+  const countryAndCapital = ref([])
+  const countryNameList = ref([])
 
   function setUser(payload) {
     if (payload.name) {
@@ -47,6 +49,11 @@ export const useMainStore = defineStore('main', () => {
     perfumeFragnant.value = data
   }
 
+  async function fetchCountryAndCapital(){
+    const { data } = await axios.get('https://countriesnow.space/api/v0.1/countries/capital')
+    countryAndCapital.value = data
+    countryNameList.value = data.data.map(item => item.name)
+  }
 
   function fetchSampleHistory() {
     axios
@@ -78,6 +85,9 @@ export const useMainStore = defineStore('main', () => {
     perfumeFragnant,
     fetchListFragnant,
     isLoading,
-    setLoading
+    setLoading,
+    countryNameList,
+    countryAndCapital,
+    fetchCountryAndCapital
   }
 })

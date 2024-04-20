@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="js">
 import {mdiViewList} from '@mdi/js'
 import SectionMain from '@/components/SectionMain.vue'
 import TableSampleClients from '@/components/TableSampleClients.vue'

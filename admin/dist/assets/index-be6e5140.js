@@ -1,0 +1,1 @@
+import{a as e,b as a,d as n,e as o,k as s,$ as c,af as r,z as u}from"./index-749301d1.js";const _=s("p",null,"Hoang Minh Duc",-1);function d(p,l,f,m,h,$){const t=e("layout-authenticated");return a(),n(t,null,{default:o(()=>[_]),_:1})}const i=r({components:{LayoutAuthenticated:u}}),k=c(i,[["render",d]]);export{k as default};

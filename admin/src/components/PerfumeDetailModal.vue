@@ -290,7 +290,7 @@ onMounted(() => {
 })
 
 </script>
-<style lang="sass">
+<style lang="sass" scoped>
 .remove-img-button
   position: absolute
   top: 0px
