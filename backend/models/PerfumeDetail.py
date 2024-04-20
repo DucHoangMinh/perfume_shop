@@ -1,5 +1,5 @@
 from models.Base import BaseModel
-from peewee import CharField, TextField, ForeignKeyField, IntegerField
+from peewee import CharField, TextField, ForeignKeyField, IntegerField, BooleanField
 from playhouse.postgres_ext import JSONField
 from models.PerfumeFragnant import PerfumeFragnant
 from models.PerfumeBranch import PerfumeBranch
@@ -11,7 +11,7 @@ class PerfumeDetail(BaseModel):
     fragnant = ForeignKeyField(PerfumeFragnant, backref='perfumedetails', column_name="fragnant_id")
     volume = IntegerField(null=False)
     concentration = IntegerField(null=False)
-    gender = CharField(null=False, max_length=10)
+    gender = BooleanField(null=False)
     price = IntegerField(null=False)
     description = TextField(null=False)
     images = JSONField(null=False)

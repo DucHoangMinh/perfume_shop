@@ -5,17 +5,23 @@ import TableSampleClients from '@/components/TableSampleClients.vue'
 import CardBox from '@/components/CardBox.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue'
-import PerfumeDetailModel from "@/components/PerfumeDetailModel.vue";
+import PerfumeDetailModel from "@/components/PerfumeDetailModal.vue";
 import {ref} from "vue";
 import {showNotification} from "@/common";
 import {useMainStore} from "@/stores/main";
 import {mainStore} from "@/main";
 const openAddPerfumeModal = ref(false)
 
+const perfumeDetailProp = ref(null)
+
 const uploadSucess = async () => {
   await mainStore.fetchSampleClients()
   openAddPerfumeModal.value = false
   showNotification.success("Thêm thông tin sản phẩm mới thành công!")
+}
+const openViewProduct = (product) => {
+  perfumeDetailProp.value = product
+  openAddPerfumeModal.value = true
 }
 
 </script>
@@ -23,9 +29,11 @@ const uploadSucess = async () => {
 <template>
   <LayoutAuthenticated>
     <PerfumeDetailModel
+      v-if="openAddPerfumeModal"
       :title="'Thêm sản phẩm mới'"
       :model-value="openAddPerfumeModal"
       :has-cancel="true"
+      :perfume-detail-prop="perfumeDetailProp"
       @upload-success="uploadSucess"
       @cancel-add-perfume="openAddPerfumeModal = false"
     >
@@ -34,12 +42,16 @@ const uploadSucess = async () => {
       <SectionTitleLineWithButton
         :icon="mdiViewList"
         title="Danh sách sản phẩm"
-        @open-modal="openAddPerfumeModal = true"
-        main>
+        @open-modal="() => {openAddPerfumeModal = true; perfumeDetailProp = null}"
+        main
+      >
       </SectionTitleLineWithButton>
 
       <CardBox class="mb-6" has-table>
-        <TableSampleClients checkable />
+        <TableSampleClients
+          checkable
+          @open-view="args => openViewProduct(args)"
+        />
       </CardBox>
     </SectionMain>
   </LayoutAuthenticated>
