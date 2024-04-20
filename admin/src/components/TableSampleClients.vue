@@ -114,8 +114,8 @@ const remove = (arr, cb) => {
             <BaseButton
               color="danger"
               :icon="mdiTrashCan"
+              @click="emit('close-view', client)"
               small
-              @click="isModalDangerActive = true"
             />
           </BaseButtons>
         </td>

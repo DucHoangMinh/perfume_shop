@@ -24,6 +24,9 @@ const api = {
   },
   put: async (endpoint, data) => {
     return await axios.put(`http://127.0.0.1:5000${endpoint}`, data)
+  },
+  delete: async (endpoint) => {
+    return await axios.delete(`http://127.0.0.1:5000${endpoint}`)
   }
 }
 

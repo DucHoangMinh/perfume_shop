@@ -20,7 +20,7 @@ class BaseModel(Model):
 
     @classmethod
     def get_all(cls):
-        query = cls.select()
+        query = cls.select().where(cls.is_active == True)
         response = []
         for item in query:
             print(model_to_dict(item))
