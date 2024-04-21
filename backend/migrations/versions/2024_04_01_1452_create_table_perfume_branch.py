@@ -23,7 +23,7 @@ def upgrade() -> None:
         CREATE TABLE perfume_branch(
             id BIGSERIAL PRIMARY KEY NOT NULL UNIQUE,
             name VARCHAR(255) UNIQUE NOT NULL,
-            founded_year DATE NOT NULL,
+            founded_year INT NOT NULL,
             country_of_origin VARCHAR(255) NOT NULL,
             website VARCHAR(255) NOT NULL UNIQUE,
             email VARCHAR(255) NOT NULL UNIQUE,
