@@ -6,6 +6,7 @@ Create Date: 2024-04-01 14:53:29.278797
 
 """
 from typing import Sequence, Union
+from alembic import op
 
 from alembic import op
 import sqlalchemy as sa
@@ -19,7 +20,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    return '''
+    op.execute('''
         CREATE TABLE perfume_detail(
             id BIGSERIAL PRIMARY KEY UNIQUE NOT NULL ,
             name VARCHAR(255) UNIQUE NOT NULL,
@@ -38,10 +39,10 @@ def upgrade() -> None:
         ALTER TABLE perfume_detail ADD CONSTRAINT pkey_branch FOREIGN KEY (branch_id) REFERENCES perfume_branch(id);
         ALTER TABLE perfume_detail ADD CONSTRAINT pkey_fragnant FOREIGN KEY (fragnant_id) REFERENCES perfume_fragnant(id);
 
-    '''
+    ''')
 
 
 def downgrade() -> None:
-    return '''
+    op.execute('''
         DROP TABLE perfume_detail;
-    '''
+    ''')

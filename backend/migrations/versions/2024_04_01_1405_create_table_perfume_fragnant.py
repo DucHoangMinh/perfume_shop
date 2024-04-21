@@ -19,17 +19,17 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    return '''
+    op.execute('''
         CREATE TABLE perfume_fragnant(
             id BIGSERIAL PRIMARY KEY NOT NULL UNIQUE ,
             name_en VARCHAR(255) UNIQUE NOT NULL,
             name_vn VARCHAR(255) UNIQUE NOT NULL,
             is_active BOOLEAN NOT NULL DEFAULT TRUE
         )
-    '''
+    ''')
 
 
 def downgrade() -> None:
-    return '''
+    op.execute('''
         DROP TABLE perfume_fragnant;
-    '''
+    ''')
