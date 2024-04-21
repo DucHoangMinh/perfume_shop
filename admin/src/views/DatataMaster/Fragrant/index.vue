@@ -4,6 +4,7 @@ layout-authenticated
     :show="openFragrantModal"
     :title="'Thông tin mùi hương nước hoa'"
     @close-modal="openFragrantModal = false"
+    @save-success="handleSaveSuccess"
   )
   section-main
     section-title-line-with-button(
@@ -31,12 +32,19 @@ import CardBox from "@/components/CardBox.vue";
 import CommonTable from "@/components/CommonTable.vue";
 import {headersList, columnValueList} from "@/views/DatataMaster/Fragrant/index";
 import PerfumeFragrantModal from "@/components/PerfumeFragrantModal.vue";
+import {showNotification} from "@/common";
 
 const store = useMainStore()
 const rowsList = computed(() => store.perfumeFragnant)
 
-const openFragrantModal = ref(true)
+const openFragrantModal = ref(false)
 
+const handleSaveSuccess = () => {
+  openFragrantModal.value = false
+  store.setLoading(false)
+  store.fetchListFragnant()
+  showNotification.success('Thêm thông tin mùi hương mới thành công')
+}
 </script>
 <style scoped lang="sass">
 

@@ -35,7 +35,7 @@ overlay-layer(v-show="show" v-if="show")
         .v-col-3.text-center.pb-0
           v-btn(variant="outlined" color="red" @click="emit('close-modal')").w-100 Hủy
         .v-col-3.text-center.pb-0
-          v-btn(variant="outlined" color="primary" @click="handleSavePerfumeBranch").w-100 Lưu
+          v-btn(variant="outlined" color="primary" @click="handleSaveFragrant").w-100 Lưu
 
 </template>
 <script setup lang="js">
@@ -47,10 +47,10 @@ import { mdiClose } from "@mdi/js";
 import {ref} from "vue";
 import {useMainStore} from "@/stores/main";
 import {tr} from "vuetify/locale";
-import {api} from "@/common";
+import {api, showNotification} from "@/common";
 
 const store = useMainStore()
-const emit = defineEmits(['close-modal'])
+const emit = defineEmits(['close-modal', 'save-success'])
 const props = defineProps({
   show:{
     type:Boolean,
@@ -70,9 +70,11 @@ const perfumeFragrant = ref({
 const handleSaveFragrant = async () => {
   try {
     store.setLoading(true)
-    await api.post('')
+    await api.post('/perfume_fragnant/', perfumeFragrant.value)
+    emit('save-success')
   } catch (e) {
-
+    store.setLoading(false)
+    showNotification.error('Lỗi hệ thống, vui lòng thử lại!')
   }
 }
 </script>
