@@ -5,6 +5,19 @@ from flask_login import LoginManager
 from models.User import User
 from flask_cors import CORS
 
+from apscheduler.schedulers.background import BackgroundScheduler
+
+
+# Test scheduler for coupon check
+def print_test_scheduler():
+    print("This is test scheduler")
+
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(print_test_scheduler, 'interval', minutes=1)
+scheduler.start()
+# End test scheduler
+
 app = Flask(__name__)
 CORS(app)
 bcrypt = Bcrypt(app)
