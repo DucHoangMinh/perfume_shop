@@ -10,7 +10,6 @@ layout-authenticated
    section-title-line-with-button(
     :title="'Danh sách thương hiệu nước hoa'"
     :icon="mdiViewList"
-    @click="openPerfumeBranchModal = true"
     @open-modal="openPerfumeBranchModal = true"
     main
    )
