@@ -31,6 +31,18 @@ class BaseModel(Model):
             return None
 
     @classmethod
+    def get_all_with_all_active(cls):
+        query = cls.select()
+        response = []
+        for item in query:
+            print(model_to_dict(item))
+            response.append(model_to_dict(item))
+        try:
+            return response
+        except Exception as e:
+            return None
+
+    @classmethod
     def _get_by_id(cls, id:int, fields=None):
         print("Get item by id: ", id)
         query = cls.select()

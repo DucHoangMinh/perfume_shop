@@ -17,6 +17,7 @@ class PerfumeDetail(BaseModel):
     images = JSONField(null=False)
     ingredients = JSONField(null=True)
     notes = TextField(null=False)
+    current_sale_price = IntegerField(default=None)
 
     class Meta:
         db_table = 'perfume_detail'

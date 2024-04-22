@@ -1,6 +1,8 @@
 from models.Base import BaseModel
-from peewee import TextField,DateTimeField, CharField, DateField, IntegerField, TimestampField, Check
+from peewee import TextField, DateTimeField, CharField, DateField, IntegerField, TimestampField, Check
 from playhouse.postgres_ext import JSONField
+from datetime import datetime
+from models.PerfumeDetail import PerfumeDetail
 
 
 class Coupon(BaseModel):
@@ -44,3 +46,35 @@ class Coupon(BaseModel):
             coupon.list_product_id = perfume_detail_ids
             coupon.save()
         return "Gán danh sách sản phẩm với coupon thành công", 200
+
+    @classmethod
+    def check_start_all_coupons(cls):
+        all_coupons = cls.get_all()
+        for coupon in all_coupons:
+            if coupon['is_active'] == True and coupon['period_from'] <= datetime.now() <= coupon['period_to']:
+                for pd_id in coupon['list_product_id']:
+                    perfume_detail = PerfumeDetail.get_by_id(pd_id)
+                    if perfume_detail is None:
+                        print(f"Can not find perfume with id {pd_id}")
+                        return f"Nước hoa với id {pd_id} không tồn tại", 400
+                    else:
+                        perfume_detail.current_sale_price = perfume_detail.price * ((100 - coupon['percentage']) / 100)
+                        perfume_detail.save()
+
+    @classmethod
+    def check_stop_all_coupons(cls):
+        all_coupons = cls.get_all_with_all_active()
+        for coupon in all_coupons:
+            if coupon['period_from'] > datetime.now() or coupon['period_to'] < datetime.now():
+                coupon_model = cls.get_by_id(coupon['id'])
+                coupon_model.is_active = False
+                coupon_model.save()
+                for pd_id in coupon['list_product_id']:
+                    print(pd_id)
+                    perfume_detail = PerfumeDetail.get_by_id(pd_id)
+                    if perfume_detail is None:
+                        print(f"Can not find perfume with id {pd_id}")
+                        return f"Nước hoa với id {pd_id} không tồn tại", 400
+                    else:
+                        perfume_detail.current_sale_price = None
+                        perfume_detail.save()

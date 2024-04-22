@@ -5,14 +5,15 @@ from flask_login import LoginManager
 from models.User import User
 from flask_cors import CORS
 from datetime import datetime
+from models.Coupon import Coupon
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
 # Test scheduler for coupon check
 def print_test_scheduler():
-    now = datetime.now()
-    print(f"This is test scheduler at {now}")
+    Coupon.check_stop_all_coupons()
+    Coupon.check_start_all_coupons()
 
 
 scheduler = BackgroundScheduler()
