@@ -28,6 +28,8 @@ def upgrade() -> None:
             percentage bigint CHECK ( percentage < 100 ),
             list_product_id jsonb NOT NULL
         );
+    ALTER TABLE coupon ADD COLUMN NAME VARCHAR(255);
+    ALTER TABLE coupon ADD COLUMN is_active BOOLEAN default true;
     ''')
 
 

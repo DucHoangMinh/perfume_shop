@@ -33,7 +33,6 @@ def upgrade() -> None:
         phone BIGINT not null,
         is_active BOOLEAN not null default TRUE
     );
-    ALTER TABLE coupon ADD COLUMN NAME VARCHAR(255);
     ''')
     # ### end Alembic commands ###
 
