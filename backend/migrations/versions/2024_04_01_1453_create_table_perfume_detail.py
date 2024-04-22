@@ -38,7 +38,7 @@ def upgrade() -> None:
         );
         ALTER TABLE perfume_detail ADD CONSTRAINT pkey_branch FOREIGN KEY (branch_id) REFERENCES perfume_branch(id);
         ALTER TABLE perfume_detail ADD CONSTRAINT pkey_fragnant FOREIGN KEY (fragnant_id) REFERENCES perfume_fragnant(id);
-
+        ALTER TABLE perfume_detail ADD COLUMN current_sale_price int default null;
     ''')
 
 

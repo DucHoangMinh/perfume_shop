@@ -1,11 +1,11 @@
 from models.Base import BaseModel
-from peewee import TextField, CharField, DateField, IntegerField, TimestampField, Check
+from peewee import TextField,DateTimeField, CharField, DateField, IntegerField, TimestampField, Check
 from playhouse.postgres_ext import JSONField
 
 
 class Coupon(BaseModel):
-    period_from = TimestampField()
-    period_to = TimestampField()
+    period_from = DateTimeField()
+    period_to = DateTimeField()
     code = TextField(null=False, default='')
     percentage = IntegerField(constraints=[Check('percentage < 100')])
     name = TextField()
@@ -33,3 +33,14 @@ class Coupon(BaseModel):
             list_product_id=coupon_create["list_product_id"]
         )
         new_coupon.save()
+        return "Thêm thông tin coupon mới thành công", 200
+
+    @classmethod
+    def assign_perfume_details(cls, coupon_id, perfume_detail_ids):
+        coupon = cls.get_by_id(coupon_id)
+        if coupon is None:
+            return "Coupon không tồn tại!", 404
+        else:
+            coupon.list_product_id = perfume_detail_ids
+            coupon.save()
+        return "Gán danh sách sản phẩm với coupon thành công", 200
