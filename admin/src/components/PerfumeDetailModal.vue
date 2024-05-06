@@ -176,8 +176,8 @@ const originPerfumeDetail = ref({})
 
 const perfumeDetail = ref({
   name: "",
-  branch: 1,
-  fragnant: 1,
+  branch: null,
+  fragnant: null,
   volume: 0,
   concentration: 0,
   price: 0,
