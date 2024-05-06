@@ -59,6 +59,7 @@ class Coupon(BaseModel):
                         return f"Nước hoa với id {pd_id} không tồn tại", 400
                     else:
                         perfume_detail.current_sale_price = perfume_detail.price * ((100 - coupon['percentage']) / 100)
+                        perfume_detail.current_coupon_id = coupon['id']
                         perfume_detail.save()
 
     @classmethod
@@ -70,11 +71,11 @@ class Coupon(BaseModel):
                 coupon_model.is_active = False
                 coupon_model.save()
                 for pd_id in coupon['list_product_id']:
-                    print(pd_id)
                     perfume_detail = PerfumeDetail.get_by_id(pd_id)
                     if perfume_detail is None:
                         print(f"Can not find perfume with id {pd_id}")
                         return f"Nước hoa với id {pd_id} không tồn tại", 400
                     else:
                         perfume_detail.current_sale_price = None
+                        perfume_detail.current_coupon_id = None
                         perfume_detail.save()

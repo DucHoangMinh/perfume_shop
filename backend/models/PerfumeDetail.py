@@ -3,7 +3,8 @@ from peewee import CharField, TextField, ForeignKeyField, IntegerField, BooleanF
 from playhouse.postgres_ext import JSONField
 from models.PerfumeFragnant import PerfumeFragnant
 from models.PerfumeBranch import PerfumeBranch
-
+from models.Coupon import Coupon
+from playhouse.shortcuts import model_to_dict
 
 class PerfumeDetail(BaseModel):
     name = CharField(null=False, unique=True, max_length=30)
@@ -18,6 +19,7 @@ class PerfumeDetail(BaseModel):
     ingredients = JSONField(null=True)
     notes = TextField(null=False)
     current_sale_price = IntegerField(default=None)
+    current_coupon_id = ForeignKeyField(Coupon,  backref='perfumedetailscoupon', column_name="current_coupon_id")
 
     class Meta:
         db_table = 'perfume_detail'
@@ -49,3 +51,12 @@ class PerfumeDetail(BaseModel):
         )
         perfume_detail.save()
         return "Thêm thông tin nước hoa mới thành công!", 200
+
+    @classmethod
+    def get_all_perfume_details_having_sale(cls, percentage=None):
+        perfumes_hv_s = cls.select().where(cls.current_sale_price.is_null(False))
+        response = []
+        for perfume in perfumes_hv_s:
+            if percentage is not None:
+                print(perfume)
+        return perfumes_hv_s

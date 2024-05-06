@@ -42,3 +42,9 @@ def soft_delete_perfume_detail(id: int):
 @token_required
 def get_all_perfume_details():
     return PerfumeDetail.get_all()
+
+
+@perfume_detail_router.get("/having_sale")
+@token_required
+def get_all_perfume_details_having_sale():
+    return PerfumeDetail.get_all_perfume_details_having_sale()
