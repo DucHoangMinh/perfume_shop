@@ -5,6 +5,7 @@ from models.PerfumeFragnant import PerfumeFragnant
 from models.PerfumeBranch import PerfumeBranch
 from models.Coupon import Coupon
 from playhouse.shortcuts import model_to_dict
+from datetime import datetime
 
 class PerfumeDetail(BaseModel):
     name = CharField(null=False, unique=True, max_length=30)
@@ -52,6 +53,38 @@ class PerfumeDetail(BaseModel):
         perfume_detail.save()
         return "Thêm thông tin nước hoa mới thành công!", 200
 
+    @classmethod
+    def check_start_all_coupons(cls):
+        all_coupons = Coupon.get_all()
+        for coupon in all_coupons:
+            if coupon['is_active'] == True and coupon['period_from'] <= datetime.now() <= coupon['period_to']:
+                for pd_id in coupon['list_product_id']:
+                    perfume_detail = cls.get_by_id(pd_id)
+                    if perfume_detail is None:
+                        print(f"Can not find perfume with id {pd_id}")
+                        return f"Nước hoa với id {pd_id} không tồn tại", 400
+                    else:
+                        perfume_detail.current_sale_price = perfume_detail.price * ((100 - coupon['percentage']) / 100)
+                        perfume_detail.current_coupon_id = coupon['id']
+                        perfume_detail.save()
+
+    @classmethod
+    def check_stop_all_coupons(cls):
+        all_coupons = Coupon.get_all_with_all_active()
+        for coupon in all_coupons:
+            if coupon['period_from'] > datetime.now() or coupon['period_to'] < datetime.now():
+                coupon_model = Coupon.get_by_id(coupon['id'])
+                coupon_model.is_active = False
+                coupon_model.save()
+                for pd_id in coupon['list_product_id']:
+                    perfume_detail = cls.get_by_id(pd_id)
+                    if perfume_detail is None:
+                        print(f"Can not find perfume with id {pd_id}")
+                        return f"Nước hoa với id {pd_id} không tồn tại", 400
+                    else:
+                        perfume_detail.current_sale_price = None
+                        perfume_detail.current_coupon_id = None
+                        perfume_detail.save()
     @classmethod
     def get_all_perfume_details_having_sale(cls, percentage=None):
         perfumes_hv_s = cls.select().where(cls.current_sale_price.is_null(False))
