@@ -1,0 +1,5 @@
+.idea/
+.laravel-guide
+.nuxt-guide
+node_modules
+*.pyc
