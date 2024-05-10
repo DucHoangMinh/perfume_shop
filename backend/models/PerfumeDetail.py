@@ -1,5 +1,5 @@
 from models.Base import BaseModel
-from peewee import CharField, TextField, ForeignKeyField, IntegerField, BooleanField
+from peewee import CharField, TextField, ForeignKeyField, IntegerField, BooleanField, JOIN
 from playhouse.postgres_ext import JSONField
 from models.PerfumeFragnant import PerfumeFragnant
 from models.PerfumeBranch import PerfumeBranch
@@ -87,9 +87,10 @@ class PerfumeDetail(BaseModel):
                         perfume_detail.save()
     @classmethod
     def get_all_perfume_details_having_sale(cls, percentage=None):
-        perfumes_hv_s = cls.select().where(cls.current_sale_price.is_null(False))
-        response = []
-        for perfume in perfumes_hv_s:
-            if percentage is not None:
-                print(perfume)
-        return perfumes_hv_s
+        pd = cls.alias("pd")
+        cp = Coupon.alias("cp")
+        perfumes_hv_s = pd.select(pd, cp.percentage.alias("sale_percentage")).where(pd.current_sale_price.is_null(False)).join(cp, JOIN.LEFT_OUTER, on=(cp.id == pd.current_coupon_id)).dicts()
+        print(percentage)
+        if percentage is not None:
+            perfumes_hv_s = [item for item in perfumes_hv_s if item['sale_percentage'] == percentage]
+        return list(perfumes_hv_s)

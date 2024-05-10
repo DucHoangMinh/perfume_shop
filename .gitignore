@@ -3,3 +3,4 @@
 .nuxt-guide
 node_modules
 *.pyc
+vetur.config.js
