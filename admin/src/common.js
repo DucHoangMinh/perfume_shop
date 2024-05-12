@@ -1,5 +1,7 @@
 import axios from "axios";
 import Cookies from 'js-cookie'
+import {useNotification} from "@kyvg/vue3-notification";
+
 const cookie = {
   setUser: (user) => {
     Cookies.set('user', JSON.stringify(user), {secure: true})
@@ -30,7 +32,6 @@ const api = {
   }
 }
 
-import { useNotification} from "@kyvg/vue3-notification";
 const notification = useNotification()
 const showNotification = {
   error: (message) => {
@@ -53,6 +54,18 @@ const showNotification = {
   }
 }
 
+const timeFunction = {
+  convertCouponTime: (timeStr) => {
+    const date = new Date(timeStr);
+    return date.toLocaleTimeString('vi-VN', {
+      hour: '2-digit',
+      minute: '2-digit',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).replace('lúc', '');
+  }
+}
 const yearList = [1800, 1801, 1802, 1803, 1804, 1805, 1806, 1807, 1808, 1809, 1810,
   1811, 1812, 1813, 1814, 1815, 1816, 1817, 1818, 1819, 1820, 1821, 1822, 1823, 1824, 1825,
   1826, 1827, 1828, 1829, 1830, 1831, 1832, 1833, 1834, 1835, 1836, 1837, 1838, 1839, 1840,
@@ -73,5 +86,6 @@ const yearList = [1800, 1801, 1802, 1803, 1804, 1805, 1806, 1807, 1808, 1809, 18
 export {
   api,
   showNotification,
-  yearList
+  yearList,
+  timeFunction
 }

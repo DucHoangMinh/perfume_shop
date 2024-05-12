@@ -14,6 +14,11 @@ defineProps({
     type: String,
     required: true
   },
+  haveAddButton: {
+    type: Boolean,
+    required: false,
+    default: true
+  },
   main: Boolean
 })
 
@@ -32,6 +37,6 @@ const hasSlot = computed(() => useSlots().default)
       </h1>
     </div>
     <slot v-if="hasSlot" />
-    <base-button @click="emit('open-modal')" :label="'Thêm sản phẩm'" :icon="mdiPlus"></base-button>
+    <base-button v-if="haveAddButton" @click="emit('open-modal')" :label="'Thêm sản phẩm'" :icon="mdiPlus"></base-button>
   </section>
 </template>

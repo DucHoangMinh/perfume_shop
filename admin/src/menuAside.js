@@ -10,7 +10,8 @@ import {
   mdiTelevisionGuide,
   mdiResponsive,
   mdiPalette,
-  mdiReact, mdiAlphaBBoxOutline, mdiAlphaMBoxOutline
+  mdiReact, mdiAlphaBBoxOutline, mdiAlphaMBoxOutline,
+  mdiSale
 } from '@mdi/js'
 
 export default [
@@ -26,8 +27,8 @@ export default [
   },
   {
     to: '/forms',
-    label: 'Forms',
-    icon: mdiSquareEditOutline
+    label: 'Ưu đãi',
+    icon: mdiSale
   },
   {
     to: '/ui',

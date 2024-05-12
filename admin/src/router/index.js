@@ -35,7 +35,7 @@ const routes = [
     },
     path: '/forms',
     name: 'forms',
-    component: () => import('@/views/FormsView.vue')
+    component: () => import('@/views/CouponsView.vue')
   },
   {
     meta: {
