@@ -49,3 +49,9 @@ def get_all_perfume_details():
 def get_all_perfume_details_having_sale():
     params = request.json or None
     return PerfumeDetail.get_all_perfume_details_having_sale(percentage=params.get("percentage"))
+
+@perfume_detail_router.get("/many")
+@token_required
+def get_many_perfume_details():
+    params = request.json or {"ids": []}
+    return PerfumeDetail.get_by_list_id(params["ids"])

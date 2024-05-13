@@ -1,12 +1,12 @@
 from http.client import HTTPException
 from playhouse.shortcuts import model_to_dict, dict_to_model
-from peewee import Model, DateTimeField, BigIntegerField, BooleanField, AutoField, DoesNotExist, BigAutoField
+from peewee import Model, PrimaryKeyField,DateTimeField, BigIntegerField, BooleanField, AutoField, DoesNotExist, BigAutoField
 from config.database import db
 import datetime
 
 
 class BaseModel(Model):
-    id = BigAutoField(column_name="id", primary_key=True, unique=True, null=False),
+    id = PrimaryKeyField(column_name="id", primary_key=True, unique=True, null=False),
     created_at = DateTimeField(default=datetime.datetime.now),
     created_by = BigIntegerField(),
     modified_at = DateTimeField(default=datetime.datetime.now()),
@@ -44,14 +44,25 @@ class BaseModel(Model):
 
     @classmethod
     def _get_by_id(cls, id:int, fields=None):
-        print("Get item by id: ", id)
-        query = cls.select()
         if fields:
             query = query.select(*fields)
         query = query.where(cls.id == id)
-        print(list(query))
         try:
             return list(query)[0]  # Trả về dict chứa các trường được truy xuất
+        except Exception as e:
+            return None
+
+    @classmethod
+    def get_by_list_id(cls, ids: list[int], fields=None):
+        query = cls.select()
+        if fields:
+            query = query.select(*fields)
+        query = query.where(cls.id.in_(ids))  # Sử dụng phương thức in_() để kiểm tra cls.id nằm trong danh sách ids
+        response = []
+        for item in query:
+            response.append(model_to_dict(item))
+        try:
+            return response  # Trả về dict chứa các trường được truy xuất
         except Exception as e:
             return None
 
