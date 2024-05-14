@@ -53,5 +53,5 @@ def get_all_perfume_details_having_sale():
 @perfume_detail_router.get("/many")
 @token_required
 def get_many_perfume_details():
-    params = request.json or {"ids": []}
-    return PerfumeDetail.get_by_list_id(params["ids"])
+    ids = eval(request.args.get("ids"))
+    return PerfumeDetail.get_by_list_id(ids)
