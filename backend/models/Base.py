@@ -44,6 +44,7 @@ class BaseModel(Model):
 
     @classmethod
     def _get_by_id(cls, id:int, fields=None):
+        query = cls.select()
         if fields:
             query = query.select(*fields)
         query = query.where(cls.id == id)
