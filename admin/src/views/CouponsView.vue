@@ -1,6 +1,6 @@
 <script setup>
 import {onMounted, reactive, ref} from 'vue'
-import { mdiBallotOutline, mdiAccount, mdiMail, mdiGithub } from '@mdi/js'
+import {mdiBallotOutline, mdiAccount, mdiMail, mdiGithub, mdiClose} from '@mdi/js'
 import SectionMain from '@/components/SectionMain.vue'
 import CardBox from '@/components/CardBox.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
@@ -8,8 +8,21 @@ import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.
 import SaleFilter from '@/components/SaleFilter.vue'
 import {api, showNotification, timeFunction} from "@/common";
 import SinglePerfume from "@/components/SinglePerfume.vue";
+import OverlayLayer from "@/components/OverlayLayer.vue";
+import CardBoxComponentTitle from "@/components/CardBoxComponentTitle.vue";
+import BaseButton from "@/components/BaseButton.vue";
+import CardBoxComponentBody from "@/components/CardBoxComponentBody.vue";
+import PerfumeList from "@/components/PerfumeList.vue";
+import CardBoxComponentFooter from "@/components/CardBoxComponentFooter.vue";
+import {useMainStore} from "@/stores/main";
 
+const store = useMainStore()
+
+const totalPerfumeList = ref(store.clients)
+const showPerfumeListModal = ref(false)
 const couponList = ref([])
+const currentPerfumeList = ref([])
+
 const getCouponList = async () => {
   try {
     const { data } = await api.get('/coupon/')
@@ -19,6 +32,15 @@ const getCouponList = async () => {
   }
 }
 
+const openShowPerfumeListModal = async (ids) => {
+  const { data } = await api.get(`/perfume_detail/many?ids=[${ids.toString()}]`)
+  currentPerfumeList.value = data
+  let currentPerfumeListId = currentPerfumeList.value.map(item => item.id)
+  totalPerfumeList.value.forEach(item => {
+    item.isCheck = !!currentPerfumeListId.includes(item.id);
+  })
+  showPerfumeListModal.value = true
+}
 const init = async () => {
   await getCouponList()
 }
@@ -29,6 +51,29 @@ onMounted(init)
 
 <template>
   <LayoutAuthenticated>
+    <OverlayLayer v-if="showPerfumeListModal" v-show="showPerfumeListModal">
+      <CardBox
+        class="shadow-lg max-h-modal lg:w-3/5 xl:w-8/12 z-50"
+        is-modal
+      >
+        <CardBoxComponentTitle title="">
+          <BaseButton
+            :icon="mdiClose"
+            color="whiteDark"
+            small
+            rounded-full
+            @click="showPerfumeListModal = false"
+          ></BaseButton>
+        </CardBoxComponentTitle>
+        <CardBoxComponentBody>
+          <PerfumeList :perfume-list="totalPerfumeList">
+          </PerfumeList>
+        </CardBoxComponentBody>
+        <CardBoxComponentFooter class="py-0 text-center">
+          <v-btn variant="outlined">Lưu</v-btn>
+        </CardBoxComponentFooter>
+      </CardBox>
+    </OverlayLayer>
     <SectionMain>
       <SectionTitleLineWithButton :have-add-button="false" :icon="mdiBallotOutline" title="Quản lý danh sách ưu đãi" main>
       </SectionTitleLineWithButton>
@@ -46,12 +91,12 @@ onMounted(init)
             <p>
               <span class="font-weight-bold">Danh sách sản phẩm áp dụng:</span>
               &nbsp;
-              <span style="color: #0d47a1; text-decoration: underline; cursor: pointer">bấm để xem</span>
+              <span style="color: #0d47a1; text-decoration: underline;
+              cursor: pointer" @click="() => openShowPerfumeListModal(coupon.list_product_id)">bấm để xem</span>
             </p>
           </v-col>
         </v-row>
       </CardBox>
-      <SinglePerfume></SinglePerfume>
     </SectionMain>
 <!--    <SectionMain>-->
 <!--      <CardBox>-->

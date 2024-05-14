@@ -2,56 +2,31 @@
 import {ref} from 'vue'
 import BaseIcon from "@/components/BaseIcon.vue";
 import {mdiChevronLeft, mdiChevronRight} from "@mdi/js";
+import FormCheckRadio from "@/components/FormCheckRadio.vue";
 
-const mockdata = {
-  "branch": {
-    "country_of_origin": "Antarctica",
-    "email": "hoangminhduc4125@gmail.com",
-    "founded_year": 2003,
-    "id": 1,
-    "is_active": true,
-    "name": "Dior",
-    "website": "test.com.vn"
-  },
-  "concentration": 10,
-  "current_coupon_id": {
-    "code": "test2",
-    "id": 1,
-    "is_active": true,
-    "list_product_id": [
-      1,
-      2
-    ],
-    "name": "test2",
-    "percentage": 25,
-    "period_from": "Mon, 22 Apr 2024 06:00:00 GMT",
-    "period_to": "Sat, 25 May 2024 06:00:00 GMT"
-  },
-  "current_sale_price": 91672,
-  "description": "No desc",
-  "fragnant": {
-    "id": 2,
-    "is_active": true,
-    "name_en": "Fresh",
-    "name_vn": "Hương tươi mát"
-  },
-  "gender": true,
-  "id": 1,
-  "images": [
-    "https://firebasestorage.googleapis.com/v0/b/perfumeshop-44117.appspot.com/o/products%2Fsauvage-cologne.jpgThu%20May%2009%202024%2014%3A44%3A54%20GMT%2B0700%20(Indochina%20Time)?alt=media&token=643a5c27-b6b5-410d-8aff-ce9ff9b221cd",
-    "https://firebasestorage.googleapis.com/v0/b/perfumeshop-44117.appspot.com/o/products%2Fsauvage-men-eau-de-parfum-spray-3-4-oz-100-ml.jpgThu%20May%2009%202024%2014%3A44%3A54%20GMT%2B0700%20(Indochina%20Time)?alt=media&token=8142a738-2c50-4290-bfcf-e9f50e0b39ad",
-    "https://firebasestorage.googleapis.com/v0/b/perfumeshop-44117.appspot.com/o/products%2Fsauvage-men-eau-de-parfum-spray-tester-3-4-oz-100-ml.jpgThu%20May%2009%202024%2014%3A44%3A55%20GMT%2B0700%20(Indochina%20Time)?alt=media&token=01aad180-c9b2-4238-b642-f239e32f5bb0"
-  ],
-  "ingredients": "",
-  "is_active": true,
-  "name": "Nước hoa NF3",
-  "notes": "No note",
-  "price": 122230,
-  "volume": 10
-}
+const props = defineProps({
+  perfumeDetail : {
+    type: Object,
+    default : {
+      images : [],
+      name : '',
+      branch : {
+        name : ''
+      },
+      fragnant : {
+        name_vn : ''
+      }
+    },
+    required: true,
+    haveCheckBox: {
+      type: Boolean,
+      default: false
+    }
+  }
+})
 const currentPfImagesIndex = ref(0)
 const handleOtherPhoto = (type) => {
-  const lenImgList = mockdata.images.length
+  const lenImgList = props.perfumeDetail.images.length
   if(type === "prev"){
     currentPfImagesIndex.value = currentPfImagesIndex.value === 0 ? lenImgList - 1 : currentPfImagesIndex.value - 1
     return
@@ -64,9 +39,9 @@ const handleOtherPhoto = (type) => {
 </script>
 
 <template lang="pug">
-.single-perfume
+.single-perfume.position-relative
   .perfume-image.position-relative
-    img(:src="mockdata.images[currentPfImagesIndex]" style="border-radius:6px")
+    img(:src="perfumeDetail.images[currentPfImagesIndex]" style="border-radius:6px")
     .position-absolute.slider-action-button(style="width: 100%")
       .d-flex.justify-space-between
         .icon-area(@click="() => handleOtherPhoto('prev')")
@@ -74,8 +49,14 @@ const handleOtherPhoto = (type) => {
         .icon-area(@click="() => handleOtherPhoto('next')")
           base-icon(:path="mdiChevronRight")
   .detail-infor.text-center
-    p.font-weight-bold {{mockdata.name}}
-    p {{mockdata.branch.name}} - {{mockdata.fragnant.name_vn}}
+    p.font-weight-bold {{perfumeDetail.name}}
+    p {{perfumeDetail.branch.name}} - {{perfumeDetail.fragnant.name_vn}}
+  .checkbox.position-absolute
+    form-check-radio(
+      type="checkbox"
+      :model-value="perfumeDetail.isCheck"
+      name=""
+    )
 </template>
 
 <style scoped lang="sass">
@@ -90,4 +71,7 @@ const handleOtherPhoto = (type) => {
   border-radius: 50%
   border: 1px solid #ccc
   cursor: pointer
+.checkbox
+  top: 4px
+  left: 4px
 </style>
