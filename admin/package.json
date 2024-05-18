@@ -11,6 +11,7 @@
   "dependencies": {
     "@kyvg/vue3-notification": "^3.2.1",
     "@mdi/js": "^7.0.96",
+    "@vuepic/vue-datepicker": "^8.6.0",
     "axios": "^1.6.8",
     "chart.js": "^4.4.0",
     "firebase": "^10.11.0",

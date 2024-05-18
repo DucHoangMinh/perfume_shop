@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from 'vue'
+import {ref, toRef, toRefs} from 'vue'
 import BaseIcon from "@/components/BaseIcon.vue";
 import {mdiChevronLeft, mdiChevronRight} from "@mdi/js";
 import FormCheckRadio from "@/components/FormCheckRadio.vue";
@@ -25,6 +25,7 @@ const props = defineProps({
   }
 })
 const currentPfImagesIndex = ref(0)
+const { perfumeDetail } = toRefs(props)
 const handleOtherPhoto = (type) => {
   const lenImgList = props.perfumeDetail.images.length
   if(type === "prev"){
@@ -35,6 +36,10 @@ const handleOtherPhoto = (type) => {
     currentPfImagesIndex.value = currentPfImagesIndex.value === lenImgList - 1 ? 0 : currentPfImagesIndex.value + 1
     return
   }
+}
+const emit = defineEmits(['click-checkbox'])
+const updateValue = (val) => {
+  perfumeDetail.isCheck = val
 }
 </script>
 
@@ -52,10 +57,11 @@ const handleOtherPhoto = (type) => {
     p.font-weight-bold {{perfumeDetail.name}}
     p {{perfumeDetail.branch.name}} - {{perfumeDetail.fragnant.name_vn}}
   .checkbox.position-absolute
-    form-check-radio(
+    input(
       type="checkbox"
-      :model-value="perfumeDetail.isCheck"
-      name=""
+      v-model="perfumeDetail.isCheck"
+      name="heheh"
+      @change="() => emit('click-checkbox', perfumeDetail)"
     )
 </template>
 
@@ -72,6 +78,10 @@ const handleOtherPhoto = (type) => {
   border: 1px solid #ccc
   cursor: pointer
 .checkbox
-  top: 4px
+  top: 12px
   left: 4px
+::v-deep .checkbox input[type='checkbox'], .radio input[type='radio'], .switch input[type='checkbox']
+  opacity: 1
+  z-index: 10
+  border: 1px solid #ccc
 </style>

@@ -8,6 +8,8 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 const vuetify = createVuetify({
   components,
@@ -19,7 +21,9 @@ import './css/main.css'
 const pinia = createPinia()
 
 // Create Vue app
-createApp(App).use(router).use(pinia).use(vuetify).mount('#app')
+createApp(App).use(router).use(pinia).use(vuetify)
+  .component('VueDatePicker', VueDatePicker)
+  .mount('#app')
 
 // Init main store
 const mainStore = useMainStore(pinia)

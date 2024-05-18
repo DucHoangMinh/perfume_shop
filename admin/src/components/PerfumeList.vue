@@ -1,6 +1,8 @@
 <script setup>
 import SinglePerfume from "@/components/SinglePerfume.vue";
+import {toRefs} from "vue";
 
+const emit = defineEmits(['click-checkbox'])
 const props = defineProps({
   perfumeList: {
     type: Array,
@@ -8,6 +10,14 @@ const props = defineProps({
     required: true
   }
 })
+const { perfumeList } = toRefs(props)
+const handleClickCheckbox  = (pd) => {
+  console.log(pd.isCheck)
+  perfumeList.value.forEach((item, index) => {
+    if(item.id === pd.id) perfumeList.value[index].isCheck = pd.isCheck
+  })
+  emit("click-checkbox", perfumeList.value)
+}
 </script>
 
 <template lang="pug">
@@ -15,6 +25,7 @@ const props = defineProps({
   div.container(v-for="perfume in perfumeList").mb-2
     single-perfume(
      :perfume-detail="perfume"
+     @click-checkbox="handleClickCheckbox"
     )
 </template>
 

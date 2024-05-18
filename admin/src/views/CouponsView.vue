@@ -15,6 +15,7 @@ import CardBoxComponentBody from "@/components/CardBoxComponentBody.vue";
 import PerfumeList from "@/components/PerfumeList.vue";
 import CardBoxComponentFooter from "@/components/CardBoxComponentFooter.vue";
 import {useMainStore} from "@/stores/main";
+import CouponModal from "@/components/CouponModal.vue";
 
 const store = useMainStore()
 
@@ -22,6 +23,7 @@ const totalPerfumeList = ref(store.clients)
 const showPerfumeListModal = ref(false)
 const couponList = ref([])
 const currentPerfumeList = ref([])
+const selectedPerfumeDetail = ref([])
 
 const getCouponList = async () => {
   try {
@@ -41,16 +43,25 @@ const openShowPerfumeListModal = async (ids) => {
   })
   showPerfumeListModal.value = true
 }
+const changeSelectedList = (selectedPDList) => {
+  console.log(selectedPDList)
+}
 const init = async () => {
   await getCouponList()
 }
-
+const showCouponModal = ref(true)
 onMounted(init)
 
 </script>
 
 <template>
   <LayoutAuthenticated>
+    <CouponModal
+      :show="showCouponModal"
+      @change-selected-list="changeSelectedList"
+      :title="'Thêm mã giảm giá mới'"
+      @close-modal="showCouponModal = false"
+    ></CouponModal>
     <OverlayLayer v-if="showPerfumeListModal" v-show="showPerfumeListModal">
       <CardBox
         class="shadow-lg max-h-modal lg:w-3/5 xl:w-8/12 z-50"
