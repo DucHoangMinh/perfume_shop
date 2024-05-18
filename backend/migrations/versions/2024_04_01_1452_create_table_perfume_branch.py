@@ -29,6 +29,7 @@ def upgrade() -> None:
             email VARCHAR(255) NOT NULL UNIQUE,
             is_active BOOLEAN NOT NULL DEFAULT TRUE
         );
+        ALTER TABLE perfume_branch ADD COLUMN search_str VARCHAR(255);
     ''')
 
 

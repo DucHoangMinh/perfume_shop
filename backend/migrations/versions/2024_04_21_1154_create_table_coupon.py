@@ -30,6 +30,7 @@ def upgrade() -> None:
         );
     ALTER TABLE coupon ADD COLUMN NAME VARCHAR(255);
     ALTER TABLE coupon ADD COLUMN is_active BOOLEAN default true;
+    ALTER TABLE coupon ADD COLUMN search_str VARCHAR(255);
     ''')
 
 

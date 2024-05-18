@@ -33,6 +33,7 @@ def upgrade() -> None:
         phone BIGINT not null,
         is_active BOOLEAN not null default TRUE
     );
+    ALTER TABLE "user" ADD COLUMN search_str VARCHAR(255);
     ''')
     # ### end Alembic commands ###
 

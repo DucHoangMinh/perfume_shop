@@ -1,6 +1,7 @@
 from http.client import HTTPException
 from playhouse.shortcuts import model_to_dict, dict_to_model
-from peewee import Model, PrimaryKeyField,DateTimeField, BigIntegerField, BooleanField, AutoField, DoesNotExist, BigAutoField
+from peewee import Model, PrimaryKeyField, DateTimeField, BigIntegerField, BooleanField, AutoField, DoesNotExist, \
+    BigAutoField, TextField
 from config.database import db
 import datetime
 
@@ -14,6 +15,7 @@ class BaseModel(Model):
     deleted_at = DateTimeField(),
     deleted_by = BigIntegerField(),
     is_active = BooleanField(default=True)
+    search_str = TextField(default='')
 
     class Meta:
         database = db

@@ -41,7 +41,8 @@ def upgrade() -> None:
         ALTER TABLE perfume_detail ADD COLUMN current_sale_price int default null;
         
         ALTER TABLE perfume_detail ADD COLUMN current_coupon_id INT DEFAULT NULL;
-        ALTER TABLE perfume_detail ADD CONSTRAINT pkey_coupon FOREIGN KEY (coupon_id) REFERENCES coupon(id)
+        ALTER TABLE perfume_detail ADD CONSTRAINT pkey_coupon FOREIGN KEY (coupon_id) REFERENCES coupon(id);
+        ALTER TABLE perfume_detail ADD COLUMN search_str VARCHAR(255);
     ''')
 
 

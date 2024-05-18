@@ -25,7 +25,8 @@ def upgrade() -> None:
             name_en VARCHAR(255) UNIQUE NOT NULL,
             name_vn VARCHAR(255) UNIQUE NOT NULL,
             is_active BOOLEAN NOT NULL DEFAULT TRUE
-        )
+        );
+        ALTER TABLE perfume_fragnant ADD COLUMN search_str VARCHAR(255);
     ''')
 
 
