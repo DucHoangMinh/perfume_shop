@@ -49,7 +49,13 @@ const changeSelectedList = (selectedPDList) => {
 const init = async () => {
   await getCouponList()
 }
-const showCouponModal = ref(true)
+const handleSaveSuccess = async () => {
+  showCouponModal.value
+  await getCouponList()
+  showCouponModal.value = false
+  showNotification.success('Thêm thông tin coupon mới thành công!')
+}
+const showCouponModal = ref(false)
 onMounted(init)
 
 </script>
@@ -57,10 +63,12 @@ onMounted(init)
 <template>
   <LayoutAuthenticated>
     <CouponModal
+      v-if="showCouponModal"
       :show="showCouponModal"
       @change-selected-list="changeSelectedList"
       :title="'Thêm mã giảm giá mới'"
       @close-modal="showCouponModal = false"
+      @save-success="handleSaveSuccess"
     ></CouponModal>
     <OverlayLayer v-if="showPerfumeListModal" v-show="showPerfumeListModal">
       <CardBox
@@ -86,7 +94,7 @@ onMounted(init)
       </CardBox>
     </OverlayLayer>
     <SectionMain>
-      <SectionTitleLineWithButton :have-add-button="false" :icon="mdiBallotOutline" title="Quản lý danh sách ưu đãi" main>
+      <SectionTitleLineWithButton @click="showCouponModal = true" :have-add-button="true" :icon="mdiBallotOutline" title="Quản lý danh sách ưu đãi" main>
       </SectionTitleLineWithButton>
       <SaleFilter></SaleFilter>
       <CardBox class="mb-2" v-for="coupon in couponList">

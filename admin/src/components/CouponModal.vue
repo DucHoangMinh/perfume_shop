@@ -4,8 +4,8 @@ import CardBox from "@/components/CardBox.vue";
 import CardBoxComponentTitle from "@/components/CardBoxComponentTitle.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import {mdiClose} from "@mdi/js";
-import {percentageList} from "@/common";
-import {ref} from "vue";
+import {api, fixWrongDateByUtc, percentageList, showNotification} from "@/common";
+import {computed, ref} from "vue";
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import PerfumeListModal from "@/components/PerfumeListModal.vue";
@@ -30,9 +30,26 @@ const coupon = ref({
   list_product_id: []
 })
 const openPerfumeListModal = ref(false)
-const emit = defineEmits(['close-modal', 'change-selected-list'])
+const emit = defineEmits(['close-modal', 'change-selected-list', 'save-success'])
+const selectedPerfumeList = ref([])
 const changeSelectedList = (selectedList) => {
   emit('change-selected-list', selectedList)
+  selectedPerfumeList.value  = selectedList
+}
+const selectedListToString = computed(() => {
+   return selectedPerfumeList.value.map(perfume => `\t• ${perfume.name}`).join("\n")
+})
+const handleSaveCoupon = async () => {
+  coupon.value.list_product_id = selectedPerfumeList.value.map(perfume => perfume.id)
+  coupon.value.period_from = fixWrongDateByUtc(coupon.value.period_from)
+  coupon.value.period_to = fixWrongDateByUtc(coupon.value.period_to)
+
+  try {
+    const { data } = await api.post('/coupon/', coupon.value)
+    emit('save-success')
+  } catch (e) {
+    showNotification.error('Lỗi khi lưu coupon, vui lòng thử lại')
+  }
 }
 </script>
 
@@ -86,22 +103,28 @@ const changeSelectedList = (selectedList) => {
             p Thời gian bắt đầu
             vue-date-picker(
               v-model="coupon.period_from"
+              format="yyyy-MM-dd HH:mm"
+              locale="vn"
             )
           v-col(cols="6").px-2.w-full.pa-0
             p Thời gian kết thúc
             vue-date-picker(
               v-model="coupon.period_to"
             )
-        v-col(cols="12").d-flex.w-full.pa-0.align-center.justify-space-between
-          p Danh sách sản phẩm:
-          v-btn(
-            variant="text"
-            density="comfortable"
-            @click="openPerfumeListModal = true"
-          ) Chọn sản phẩm
+        v-col(cols="12").w-full.pa-0
+          .d-flex.align-center.justify-space-between.w-full.pa-0
+            p Danh sách sản phẩm:
+            v-btn(
+              variant="text"
+              density="comfortable"
+              @click="openPerfumeListModal = true"
+            ) Chọn sản phẩm
+          .perfume-detail-selected
+            p.selected-list-string {{selectedListToString}}
         v-col(cols="12").d-flex.w-full.pa-0.align-center.justify-space-around
           v-btn(
             variant="outlined"
+            @click="handleSaveCoupon"
           ) Lưu mã
   perfume-list-modal(
     :show="openPerfumeListModal"
@@ -111,5 +134,6 @@ const changeSelectedList = (selectedList) => {
 </template>
 
 <style scoped lang="sass">
-
+.selected-list-string
+  white-space: pre-wrap
 </style>

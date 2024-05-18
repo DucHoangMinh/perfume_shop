@@ -12,7 +12,6 @@ const props = defineProps({
 })
 const { perfumeList } = toRefs(props)
 const handleClickCheckbox  = (pd) => {
-  console.log(pd.isCheck)
   perfumeList.value.forEach((item, index) => {
     if(item.id === pd.id) perfumeList.value[index].isCheck = pd.isCheck
   })
