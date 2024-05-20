@@ -16,7 +16,6 @@ def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = request.headers.get('token')
-        print(token)
         if not token:
             return 'Token is missing', 403
         try:
@@ -47,6 +46,9 @@ def create_user():
 def handle_login():
     attempt_user = User.get_by_property('email', request.json['email'])
     if attempt_user:
+        isAdmin = request.args.get("admin") == "true"
+        if isAdmin and attempt_user.role != "ADMIN":
+            return "You are not admin", 401
         print('[Debug] User login exists!')
         try_password = attempt_user.checkPassword(request.json['password'], hash_password=attempt_user.password_hash)
         if (try_password):
@@ -73,4 +75,11 @@ def logout():
 @user_router.get("/check_authenticated")
 @token_required
 def test_login_required():
+    isAdmin = request.args.get("admin") == "true"
+    if isAdmin:
+        token = request.headers['token']
+        data = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        user = User.get_by_property("username", data['user'])
+        if user.role == "ADMIN": return 'You are now login as admin!', 200
+        return "", 401
     return 'You are now login!', 200

@@ -95,6 +95,11 @@ const fixWrongDateByUtc = (dateStr) => {
   res.setHours(res.getHours() - res.getTimezoneOffset() / 60)
   return res.toUTCString()
 }
+
+const checkLoginStatus = async () => {
+  
+}
+
 export {
   api,
   showNotification,

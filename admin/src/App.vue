@@ -2,6 +2,7 @@
 import { RouterView } from 'vue-router'
 import {Notifications} from "@kyvg/vue3-notification";
 import CommonLoader from "@/components/CommonLoader.vue";
+import { onMounted } from 'vue';
 const handleStyle = (props) => {
   if(props.type === "error"){
     return "#e14d45"
@@ -13,6 +14,9 @@ const handleStyle = (props) => {
     return "#2ecc71"
   }
 }
+onMounted(() => {
+  console.log("Hehehe")
+})
 </script>
 
 <template>
