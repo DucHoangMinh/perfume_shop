@@ -21,7 +21,8 @@ class PerfumeFragnant(BaseModel):
             return f"Mùi hương {perfume_fragnant_create['name_en']} đã tồn tại trong hệ thống!", 400
         new_perfume_fragrant = cls(
             name_en=perfume_fragnant_create["name_en"],
-            name_vn=perfume_fragnant_create["name_vn"]
+            name_vn=perfume_fragnant_create["name_vn"],
+            search_str=f"{perfume_fragnant_create["name_en"]} | {perfume_fragnant_create["name_vn"]}"
         )
         new_perfume_fragrant.save()
         return "Thêm thông tin mùi hương mới thành công", 200

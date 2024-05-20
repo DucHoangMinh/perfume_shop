@@ -30,7 +30,8 @@ class PerfumeBranch(BaseModel):
             founded_year=perfume_branch_create["founded_year"],
             country_of_origin=perfume_branch_create["country_of_origin"],
             website=perfume_branch_create["website"],
-            email=perfume_branch_create["email"]
+            email=perfume_branch_create["email"],
+            search_str=f"{perfume_branch_create["name"]} | {perfume_branch_create["website"]} | {perfume_branch_create["email"]}"
         )
         new_perfume_branch.save()
         return "Thêm thông tin hãng nước hoa mới thành công", 200

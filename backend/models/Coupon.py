@@ -30,7 +30,8 @@ class Coupon(BaseModel):
             code=coupon_create["code"],
             percentage=coupon_create["percentage"],
             name=coupon_create["name"],
-            list_product_id=coupon_create["list_product_id"]
+            list_product_id=coupon_create["list_product_id"],
+            search_str=f"{coupon_create["name"]} | {coupon_create["code"]} | {coupon_create["percentage"]}"
         )
         new_coupon.save()
         return "Thêm thông tin coupon mới thành công", 200

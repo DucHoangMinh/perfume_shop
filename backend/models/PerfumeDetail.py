@@ -37,6 +37,8 @@ class PerfumeDetail(BaseModel):
         if check_perfume_by_name:
             return f"Loại nước hoa {perfume_detail_create['name']} đã tồn tại trong hệ thống!", 400
 
+        branch_name_selected = (PerfumeBranch.get_by_id(perfume_detail_create["branch"])).name
+        fragnant_name_selected = (PerfumeFragnant.get_by_id(perfume_detail_create["fragnant"])).name_vn
         perfume_detail = cls(
             name=perfume_detail_create["name"],
             branch=perfume_detail_create["branch"],
@@ -48,7 +50,8 @@ class PerfumeDetail(BaseModel):
             description=perfume_detail_create["description"],
             images=perfume_detail_create["images"],
             ingredients=perfume_detail_create["ingredients"],
-            notes=perfume_detail_create["notes"]
+            notes=perfume_detail_create["notes"],
+            search_str=f"{perfume_detail_create["name"]} | {branch_name_selected} | {fragnant_name_selected}"
         )
         perfume_detail.save()
         return "Thêm thông tin nước hoa mới thành công!", 200
