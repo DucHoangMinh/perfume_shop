@@ -24,7 +24,7 @@ layout-authenticated
 <script setup lang="js">
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
 import SectionMain from "@/components/SectionMain.vue";
-import {computed, ref} from "vue";
+import { computed, onMounted, ref } from 'vue'
 import SectionTitleLineWithButton from "@/components/SectionTitleLineWithButton.vue";
 import {mdiViewList} from "@mdi/js";
 import {useMainStore} from "@/stores/main";
@@ -45,6 +45,10 @@ const handleSaveSuccess = () => {
   store.fetchListFragnant()
   showNotification.success('Thêm thông tin mùi hương mới thành công')
 }
+const init = async () => {
+  await store.fetchListFragnant()
+}
+onMounted(init)
 </script>
 <style scoped lang="sass">
 

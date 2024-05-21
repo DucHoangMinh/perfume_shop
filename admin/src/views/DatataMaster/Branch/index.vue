@@ -28,7 +28,7 @@ import CardBox from "@/components/CardBox.vue";
 import CommonTable from "@/components/CommonTable.vue";
 import { headersList, columnValueList} from "@/views/DatataMaster/Branch";
 import {useMainStore} from "@/stores/main";
-import {computed, ref} from "vue";
+import { computed, onMounted, ref } from 'vue'
 import {mdiViewList} from "@mdi/js";
 import PerfumeBranchModel from "@/components/PerfumeBranchModel.vue";
 import {showNotification} from "@/common";
@@ -43,6 +43,10 @@ const handleAddPerfumeSuccess = async () => {
   openPerfumeBranchModal.value = false
   showNotification.success("Thêm thông tin hãng nước hoa mới thành công!")
 }
+const init = async () => {
+  await store.fetchListBranch()
+}
+onMounted(init)
 </script>
 <style scoped lang="sass">
 

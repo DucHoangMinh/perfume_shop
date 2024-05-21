@@ -25,6 +25,16 @@ export const useMainStore = defineStore('main', () => {
   const countryAndCapital = ref([])
   const countryNameList = ref([])
 
+  const accountData = ref({
+    token: "",
+    infor: {}
+  })
+
+  async function setAccountData(data) {
+    accountData.value.token = data.token
+    accountData.value.infor = data.user
+  }
+
   function setUser(payload) {
     if (payload.name) {
       userName.value = payload.name
@@ -88,6 +98,8 @@ export const useMainStore = defineStore('main', () => {
     setLoading,
     countryNameList,
     countryAndCapital,
-    fetchCountryAndCapital
+    fetchCountryAndCapital,
+    accountData,
+    setAccountData
   }
 })

@@ -16,7 +16,7 @@ const openAddPerfumeModal = ref(false)
 
 const perfumeDetailProp = ref(null)
 const currentPerfumeDetail = ref(null)
-
+const store = useMainStore()
 const uploadSucess = async () => {
   await mainStore.fetchSampleClients()
   openAddPerfumeModal.value = false

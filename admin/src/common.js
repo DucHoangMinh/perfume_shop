@@ -1,6 +1,7 @@
+import { useMainStore } from "@/stores/main";
 import axios from "axios";
 import Cookies from 'js-cookie'
-import {useNotification} from "@kyvg/vue3-notification";
+import { useNotification } from '@kyvg/vue3-notification'
 
 const cookie = {
   setUser: (user) => {
@@ -16,18 +17,25 @@ const cookie = {
     return JSON.parse(Cookies.get('token') || null)
   }
 }
-axios.defaults.headers.common['token'] = cookie.getToken()
 const api = {
   get: async (endpoint) => {
+    const store = useMainStore()
+    axios.defaults.headers.common['token'] = store.accountData.token
     return await axios.get(`http://127.0.0.1:5000${endpoint}`)
   },
   post: async (endpoint, data) => {
+    const store = useMainStore()
+    axios.defaults.headers.common['token'] = store.accountData.token
     return await axios.post(`http://127.0.0.1:5000${endpoint}`, data)
   },
   put: async (endpoint, data) => {
+    const store = useMainStore()
+    axios.defaults.headers.common['token'] = store.accountData.token
     return await axios.put(`http://127.0.0.1:5000${endpoint}`, data)
   },
   delete: async (endpoint) => {
+    const store = useMainStore()
+    axios.defaults.headers.common['token'] = store.accountData.token
     return await axios.delete(`http://127.0.0.1:5000${endpoint}`)
   }
 }
@@ -53,6 +61,8 @@ const showNotification = {
     })
   }
 }
+
+
 
 const timeFunction = {
   convertCouponTime: (timeStr) => {
@@ -97,7 +107,15 @@ const fixWrongDateByUtc = (dateStr) => {
 }
 
 const checkLoginStatus = async () => {
-  
+  try {
+    const { data } = await api.post('/user/check_authenticated?admin=true')
+    console.log(location.href)
+  } catch (e){
+    setTimeout(() => {
+      showNotification.error("Lỗi xác thực, vui lòng đăng nhập lại!")
+    }, 3000)
+    location.href = "/login"
+  }
 }
 
 export {
@@ -106,5 +124,6 @@ export {
   yearList,
   timeFunction,
   percentageList,
-  fixWrongDateByUtc
+  fixWrongDateByUtc,
+  checkLoginStatus
 }

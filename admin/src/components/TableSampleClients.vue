@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useMainStore } from '@/stores/main'
 import { mdiEye, mdiTrashCan } from '@mdi/js'
 import CardBoxModal from '@/components/CardBoxModal.vue'
@@ -53,6 +53,10 @@ const remove = (arr, cb) => {
 
   return newArr
 }
+const init = async () => {
+  await mainStore.fetchSampleClients()
+}
+onMounted(init)
 
 </script>
 

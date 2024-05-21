@@ -2,7 +2,12 @@
 import { RouterView } from 'vue-router'
 import {Notifications} from "@kyvg/vue3-notification";
 import CommonLoader from "@/components/CommonLoader.vue";
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue'
+import {checkLoginStatus} from "@/common";
+import { useRoute } from 'vue-router'
+const route = useRoute()
+import router from '@/router'
+const current_path = computed(() => route.path)
 const handleStyle = (props) => {
   if(props.type === "error"){
     return "#e14d45"
@@ -14,8 +19,15 @@ const handleStyle = (props) => {
     return "#2ecc71"
   }
 }
-onMounted(() => {
-  console.log("Hehehe")
+onMounted(async () => {
+  let currPath = ""
+  setTimeout(async () => {
+    currPath = route.path
+    if(currPath != "/login"){
+    await checkLoginStatus()
+    console.log("hehe")
+  }
+  },1000)
 })
 </script>
 
