@@ -10,6 +10,25 @@ services:
     ports:
       - "3000:3000"
     command: ["npm", "run", "dev"]
+  admin:
+    build: admin
+    working_dir: /app/admin
+    user: 1000:1000
+    volumes:
+      - ./admin:/app/admin
+    ports:
+      - "5173:5173"
+    command: ["npm", "run", "dev"]
+  backend:
+    build: backend
+    volumes:
+      - ./backend:/app/backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    entrypoint: [ "poetry", "run" ]
+    command: ["python", "main.py"]
   db:
     image: postgres:14-alpine
     ports:
