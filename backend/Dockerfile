@@ -7,3 +7,5 @@ RUN cd /usr/local/bin
 RUN ln -s /opt/poetry/bin/poetry
 RUN poetry config virtualenvs.in-project true
 
+RUN apk update && apk add --no-cache bash
+

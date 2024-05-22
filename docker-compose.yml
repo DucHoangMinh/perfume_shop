@@ -24,7 +24,7 @@ services:
     volumes:
       - ./backend:/app/backend
     ports:
-      - "5000:5000"
+      - 5000:5000
     depends_on:
       - db
     entrypoint: [ "poetry", "run" ]
