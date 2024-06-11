@@ -6,7 +6,7 @@ import CardBox from '@/components/CardBox.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue'
 import PerfumeDetailModel from "@/components/PerfumeDetailModal.vue";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {api, showNotification} from "@/common";
 import {useMainStore} from "@/stores/main";
 import {mainStore} from "@/main";
@@ -49,7 +49,11 @@ const closeViewProduct = (product) => {
 }
 
 const showConfirmDialog = ref(false)
-
+const init = async () => {
+  await mainStore.fetchListFragnant()
+  await mainStore.fetchListBranch()
+}
+onMounted(init)
 </script>
 
 <template>

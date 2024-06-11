@@ -9,19 +9,22 @@ div.home-page
   v-container
     perfume-list-introduce(
       perfume-list-name="Ưu đãi"
+      :perfume-list="perfumeHavingSale"
     )
 </template>
 
 <script lang="js">
-import {defineComponent, ref} from "vue";
+import {defineComponent, onMounted, ref} from "vue";
 import {slider_banner_images} from "@/assets/assets";
 import PerfumeListIntroduce from "@/components/PerfumeListIntroduce/index.vue";
+import {api, showNotification} from "@/common";
 const HomePage = defineComponent({
   components: {
     PerfumeListIntroduce
   },
   setup(){
     const currentSliderImageIndex = ref(0)
+    const perfumeHavingSale = ref([])
     const handleOtherPhoto = (type) => {
       const lenImgList = slider_banner_images.length
       if(type === "prev"){
@@ -33,10 +36,24 @@ const HomePage = defineComponent({
         return
       }
     }
+    const getPerfumeHavingSale = async () => {
+      try {
+        const { data } = await api.get('/perfume_detail/having_sale')
+        perfumeHavingSale.value = data
+      } catch (e) {
+        showNotification.error('Lỗi khi tải dữ liệu')
+      }
+    }
+
+    const init = async () => {
+      await getPerfumeHavingSale()
+    }
+    onMounted(init)
     return {
       currentSliderImageIndex ,
       slider_banner_images,
-      handleOtherPhoto
+      handleOtherPhoto,
+      perfumeHavingSale
     }
   }
 })

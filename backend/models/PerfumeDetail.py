@@ -93,7 +93,6 @@ class PerfumeDetail(BaseModel):
         pd = cls.alias("pd")
         cp = Coupon.alias("cp")
         perfumes_hv_s = pd.select(pd, cp.percentage.alias("sale_percentage")).where(pd.current_sale_price.is_null(False)).join(cp, JOIN.LEFT_OUTER, on=(cp.id == pd.current_coupon_id)).dicts()
-        print(percentage)
         if percentage is not None:
             perfumes_hv_s = [item for item in perfumes_hv_s if item['sale_percentage'] == percentage]
         return list(perfumes_hv_s)

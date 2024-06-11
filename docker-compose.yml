@@ -29,6 +29,8 @@ services:
       - db
     entrypoint: [ "poetry", "run" ]
     command: ["python", "main.py"]
+    networks:
+      - default
   db:
     image: postgres:14-alpine
     ports:
@@ -39,3 +41,5 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_USER=user
       - POSTGRES_DB=default
+    networks:
+      - default
