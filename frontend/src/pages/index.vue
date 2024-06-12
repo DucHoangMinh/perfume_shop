@@ -7,10 +7,26 @@ div.home-page
         v-icon.slider-button(icon="mdi-chevron-left" @click="() => handleOtherPhoto('prev')" style="font-size: 80px; opacity: 0.7")
         v-icon.slider-button(icon="mdi-chevron-right" @click="() => handleOtherPhoto('next')" style="font-size: 80px; opacity: 0.7")
   v-container
-    perfume-list-introduce(
-      perfume-list-name="Ưu đãi"
-      :perfume-list="perfumeHavingSale"
-    )
+    .having-sale.text-center
+      perfume-list-introduce(
+        perfume-list-name="Ưu đãi"
+        :perfume-list="perfumeHavingSale"
+        :is-sale="true"
+      )
+      v-btn.my-6(
+        variant="outlined"
+      ) Xem thêm
+    .by-fragrant.text-center
+      perfume-list-introduce(
+        perfume-list-name="Nước hoa theo mùi hương"
+        :perfume-list="currentPerfumeByFragrant"
+        :select-filter-list="perfumeFragrant"
+        @change-tab="changeFilterSelectFragrant"
+      )
+      v-btn.my-6(
+        variant="outlined"
+      ) Xem thêm
+
 </template>
 
 <script lang="js">
@@ -25,6 +41,9 @@ const HomePage = defineComponent({
   setup(){
     const currentSliderImageIndex = ref(0)
     const perfumeHavingSale = ref([])
+    const perfumeFragrant = ref([])
+    const allPerfumeList = ref([])
+    const currentPerfumeByFragrant = ref([])
     const handleOtherPhoto = (type) => {
       const lenImgList = slider_banner_images.length
       if(type === "prev"){
@@ -44,16 +63,41 @@ const HomePage = defineComponent({
         showNotification.error('Lỗi khi tải dữ liệu')
       }
     }
-
+    const getPerfumeFragrant = async () => {
+      try {
+        const { data } = await api.get('/perfume_fragnant/')
+        perfumeFragrant.value = data
+      } catch (e) {
+        showNotification.error('Lỗi khi tải dữ liệu')
+      }
+    }
+    const getAllPerfumeList = async () => {
+      try {
+        const { data } = await api.get('/perfume_detail/all')
+        allPerfumeList.value = data
+      } catch (e) {
+        showNotification.error('Lỗi khi tải dữ liệu')
+      }
+    }
+    const changeFilterSelectFragrant = (selected) => {
+      currentPerfumeByFragrant.value = allPerfumeList.value.filter(pf => pf.fragnant.id === selected)
+    }
     const init = async () => {
       await getPerfumeHavingSale()
+      await getPerfumeFragrant()
+      await getAllPerfumeList()
+      changeFilterSelectFragrant(1)
     }
     onMounted(init)
     return {
       currentSliderImageIndex ,
       slider_banner_images,
       handleOtherPhoto,
-      perfumeHavingSale
+      perfumeHavingSale,
+      perfumeFragrant,
+      changeFilterSelectFragrant,
+      allPerfumeList,
+      currentPerfumeByFragrant
     }
   }
 })

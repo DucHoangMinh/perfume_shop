@@ -23,6 +23,10 @@ const router = createRouter({
     {
       path: '/admin',
       component: () => import('@/pages/Admin/Home/index.vue'),
+    },
+    {
+      path: '/perfume_detail',
+      component: () => import('@/pages/PerfumeDetail.vue'),
     }
   ]
 })

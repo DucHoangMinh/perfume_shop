@@ -1,17 +1,20 @@
 <template lang="pug">
-.perfume-list-introduce-item
+.perfume-list-introduce-item(@click="() => goToPerfumeDetail(perfumeDetail.id)")
   .image.position-relative
     img(:src="perfumeDetail.images[0]" style="width: 100%")
-    .sale-percentage.position-absolute
+    .sale-percentage.position-absolute(v-if="isSale")
       p.text-white.text-center - {{perfumeDetail.sale_percentage}}%
   .infor
     p.text-center.p-name {{perfumeDetail.name}}
-    .sale-price.text-center
+    .sale-price.text-center(v-if="isSale")
       span.new-price {{perfumeDetail.current_sale_price}}đ &nbsp;
       span.old-price {{perfumeDetail.price}}
+    .sale-price.text-center(v-if="!isSale")
+      span.current-price {{perfumeDetail.price}}đ
 </template>
 <script lang="js">
 import {defineComponent} from "vue";
+import {useRoute, useRouter} from "vue-router";
 
 const PerfumeListIntroduceItem = defineComponent({
   props: {
@@ -19,10 +22,21 @@ const PerfumeListIntroduceItem = defineComponent({
       type: Object,
       required: true,
       default: () => {}
+    },
+    isSale: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   setup(){
+    const route = useRoute()
+    const router = useRouter()
+    const goToPerfumeDetail = async (pdId) => {
+      await router.push(`/perfume_detail?id=${pdId}`)
+    }
     return {
+      goToPerfumeDetail
     }
   }
 })
@@ -52,4 +66,6 @@ export default PerfumeListIntroduceItem
   left: 10px
   font-family: 'Lexend', sans-serif
   font-size: 14px
+.current-price
+  font-family: 'Lexend', sans-serif
 </style>
