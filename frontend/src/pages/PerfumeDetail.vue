@@ -41,8 +41,8 @@ onMounted(init)
           )
             img.w-full(:src="imageLink" alt='Product2')
       div(class='lg:col-span-2')
-        h2.text-2xl.font-extrabold.text-gray-800 {{perfumeDetail.name}} | {{perfumeDetail?.branch?.name}}
-        .d-flex.space-x-2.mt-4
+        h2.text-2xl.font-weight-bold.text-gray-800 {{perfumeDetail.name}} | {{perfumeDetail?.branch?.name}}
+        .d-flex.space-x-2.mt-4(style="max-height: 50px")
           svg.w-5.fill-blue-600(viewbox='0 0 14 13' fill='none' xmlns='http://www.w3.org/2000/svg')
             path(d='M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z')
           svg.w-5.fill-blue-600(viewbox='0 0 14 13' fill='none' xmlns='http://www.w3.org/2000/svg')
@@ -54,21 +54,21 @@ onMounted(init)
           svg.w-5(class='fill-[#CED5D8]' viewbox='0 0 14 13' fill='none' xmlns='http://www.w3.org/2000/svg')
             path(d='M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z')
           h4.text-gray-800.text-base 500 Reviews
-        .flex.flex-wrap.gap-4.mt-8
-          p.text-gray-800.text-3xl.font-bold $1200
+        .flex.flex-wrap.gap-4.mt-8(v-if="perfumeDetail.current_sale_price")
+          p.text-gray-800.text-3xl.font-bold {{perfumeDetail.current_sale_price}}vnđ
           p.text-gray-400.text-base
-            strike $1500
+            strike {{perfumeDetail.price}}vnđ
             span.text-sm.ml-1 Tax included
+        .flex.flex-wrap.gap-4.mt-8(v-else)
+          p.text-gray-800.text-3xl.font-bold {{perfumeDetail.price?.toLocaleString('vi-VN')}} VND
         .mt-8
-          h3.text-xl.font-bold.text-gray-800 Choose a Color
-          .flex.flex-wrap.gap-3.mt-4
-            button.w-10.h-10.bg-black.border-2.border-white.rounded-full.shrink-0.transition-all(type='button' class='hover:border-gray-800')
-            button.w-10.h-10.bg-gray-300.border-2.border-white.rounded-full.shrink-0.transition-all(type='button' class='hover:border-gray-800')
-            button.w-10.h-10.bg-gray-100.border-2.border-white.rounded-full.shrink-0.transition-all(type='button' class='hover:border-gray-800')
-            button.w-10.h-10.bg-blue-400.border-2.border-white.rounded-full.shrink-0.transition-all(type='button' class='hover:border-gray-800')
+          p Dung tích: {{perfumeDetail.volume}} ml
+          p Nồng độ: {{perfumeDetail.concentration}} %
+          p Mùi hương: {{perfumeDetail.fragnant?.name_vn}}
+          p Mô tả: {{perfumeDetail.description}}
         .flex.flex-wrap.gap-4.mt-8
-          button.px-4.py-3.bg-blue-600.text-white.text-sm.font-semibold.rounded(type='button' class='min-w-[200px] hover:bg-blue-700') Buy now
-          button.px-4.border.border-blue-600.bg-transparent.text-gray-800.text-sm.font-semibold.rounded(type='button' class='min-w-[200px] py-2.5 hover:bg-gray-50') Add to cart
+          button.px-4.py-3.bg-black.text-white.text-sm.font-semibold.rounded(type='button' class='min-w-[200px] hover:bg-blue-700') Mua hàng
+          button.px-4.border.border-blue-600.bg-transparent.text-gray-800.text-sm.font-semibold.rounded(type='button' class='min-w-[200px] py-2.5 hover:bg-gray-50') Thêm vào giỏ hàng
     //.mt-16.p-6(class='shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)]')
     //  h3.text-xl.font-bold.text-gray-800 Product information
     //  ul.mt-4.space-y-6.text-gray-800
@@ -161,5 +161,6 @@ onMounted(init)
 </template>
 
 <style scoped lang="sass">
-
+p, h2
+  font-family: 'Lexend', sans-serif
 </style>
